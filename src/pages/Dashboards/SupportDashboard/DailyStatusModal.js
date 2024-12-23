@@ -9,6 +9,9 @@ import {
     ModalFooter,
     Button,
     Label,
+    Accordion,
+    AccordionItem,
+    Collapse
 } from "reactstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -22,6 +25,7 @@ import {
     PATCH_DailyStatus,
 } from "../../../slices/thunks";
 import moment from "moment";
+import classnames from "classnames";
 const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
     const dispatch = useDispatch();
     const SupportUserData = useSelector((state) => state.SupportUser.data);
@@ -53,6 +57,7 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
         DueDate: Yup.date().required("Due Date is required"),
         solutionDetails: Yup.string().required("Solution Details are required"),
         dailyID: Yup.string(),
+        ShareStatus: Yup.bool()
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
@@ -78,7 +83,55 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
 
     const SupportUser = extractOptions(SupportUserData, "SubUserID", "Name");
     const statusOptions = extractOptions(SupportStatusData, "StatusID", "Status");
-
+    //col
+    const vendorUser = JSON.parse(localStorage.getItem("vendorUser"
+        ));
+        const formatLocalDateTime = (date) => {
+            const offset = date.getTimezoneOffset();
+            const localDate = new Date(date.getTime() - offset * 60 * 1000);
+            return localDate.toISOString().slice(0, 16);
+        };
+        const [clientName, setClientName] = useState("");
+        const dummyData = {
+            name: vendorUser.subUserName,
+            mobile: localStorage.getItem("mobileNumber"),
+            email: localStorage.getItem("userName"),
+            ticketNo: (parent === "Dashboard") ? ticketData : selectedRow?.TicketNumber,
+            clientName: clientName,
+            dateTime: formatLocalDateTime(new Date()),
+        };
+    
+        useEffect(() => {
+            const storedClientName = vendorUser.subscriberName;
+            setClientName(
+                storedClientName || `${vendorUser.subscriberCode} - ${vendorUser.subscriberName}`
+            );
+        }, [vendorUser]);
+    const [col1, setCol1] = useState(true);
+        const [col2, setCol2] = useState(false);
+        const [col3, setCol3] = useState(false);
+    
+        const toggleCol1 = () => {
+            setCol1(!col1);
+            setCol2(false);
+            setCol3(false);
+        };
+    
+        const toggleCol2 = () => {
+            setCol2(!col2);
+            setCol1(false);
+            setCol3(false);
+        };
+        const formControlSm = {
+            height: "30px",
+            fontSize: "12px",
+            padding: "5px",
+        };
+        const toggleCol3 = () => {
+            setCol3(!col3);
+            setCol1(false);
+            setCol2(false);
+        };
     return (
         <Modal isOpen={modal} toggle={toggleModal} size="lg">
             <ModalHeader toggle={toggleModal}>Update Query Details</ModalHeader>
@@ -111,23 +164,170 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
 
                             solutionDetails: modalData?.Remarks || "",
                             dailyID: modalData?.DailyID || "",
+                            ShareStatus: false,
                         }}
                         validationSchema={validationSchema}
                         onSubmit={handleSubmit}
                     >
                         {({ values, setFieldValue }) => (
                             <Form>
+                                <Row classname="gy-3">
+                                    <Accordion id="query-details-accordion" flush>
+                                        <AccordionItem className="material-shadow" style={{ border: "1px solid #dee2e6" }}>
+                                            <h2 className="accordion-header" id="headingSubject">
+                                                <button
+                                                    className={classnames("accordion-button", { collapsed: !col1 })}
+                                                    type="button"
+                                                    onClick={toggleCol1}
+                                                    style={{ cursor: "pointer" }}
+                                                >
+                                                    Query Details
+                                                </button>
+                                            </h2>
+                                            <Collapse isOpen={col1} className="accordion-collapse">
+                                                <div className="accordion-body">
+                                                    <Row
+                                                        style={{
+                                                            margin: "0",
+                                                            padding: "10px",
+                                                            border: "1px solid #dee2e6",
+                                                            borderRadius: "5px",
+                                                            backgroundColor: "#f8f9fa",
+                                                        }}
+                                                    >
+                                                        <Col xs={12} style={{ fontSize: "12px" }}>
+                                                            {/* Name and Ticket No */}
+                                                            <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                                                <span style={{ fontWeight: "bold" }}>{dummyData.name}</span>
+                                                                <div>
+                                                                    <span style={{ fontWeight: "bold" }}>
+                                                                        {dummyData.ticketNo}
+                                                                    </span>
+                                                                </div>
+                                                            </div>
+
+                                                            {/* Mobile No & Email */}
+                                                            <div
+                                                                style={{
+                                                                    display: "flex",
+                                                                    justifyContent: "space-between",
+                                                                    alignItems: "center", // Align vertically for better appearance
+                                                                }}
+                                                            >
+                                                                <span
+                                                                    style={{
+                                                                        color: "#6c757d",
+                                                                        maxWidth: "50%", // Set a maximum width
+                                                                        overflow: "hidden",
+                                                                        whiteSpace: "nowrap",
+                                                                        textOverflow: "ellipsis",
+                                                                    }}
+                                                                    title={`${dummyData.mobile} | ${dummyData.email}`} // Tooltip for full data
+                                                                >
+                                                                    {dummyData.mobile} | {dummyData.email}
+                                                                </span>
+                                                                <span
+                                                                    style={{
+                                                                        maxWidth: "50%", // Set a maximum width
+                                                                        overflow: "hidden",
+                                                                        whiteSpace: "nowrap",
+                                                                        textOverflow: "ellipsis",
+                                                                    }}
+                                                                    title={new Date(dummyData.dateTime).toLocaleString(undefined, {
+                                                                        year: "numeric",
+                                                                        month: "2-digit",
+                                                                        day: "2-digit",
+                                                                        hour: "2-digit",
+                                                                        minute: "2-digit",
+                                                                    })} // Tooltip for full date and time
+                                                                >
+                                                                    {new Date(dummyData.dateTime).toLocaleString(undefined, {
+                                                                        year: "numeric",
+                                                                        month: "2-digit",
+                                                                        day: "2-digit",
+                                                                        hour: "2-digit",
+                                                                        minute: "2-digit",
+                                                                    })}
+                                                                </span>
+                                                            </div>
+
+                                                            {/* Client Name */}
+                                                            <div>
+                                                                <span>{dummyData.clientName}</span>
+                                                            </div>
+
+
+                                                        </Col>
+                                                    </Row>
+                                                    {/* Query Menu */}
+                                                    {/* Query Menu */}
+                                                    {/* Query Menu */}
+                                                    {/* Query Menu */}
+                                                    <div style={{ marginTop: "10px" }}>
+                                                        <label htmlFor="QueryMenu" style={{ fontWeight: "bold" }}>Query Menu:</label>
+                                                        <input
+                                                            type="text"
+                                                            id="QueryMenu"
+                                                            style={{
+                                                                ...formControlSm,
+                                                                backgroundColor: "#f8f9fa", // Light gray background for disabled look
+                                                                color: "#6c757d",          // Muted text color
+                                                                cursor: "not-allowed",     // Change cursor to indicate non-editable
+                                                            }}
+                                                            className="form-control"
+                                                            value={selectedRow.MenuCode || "N/A"}
+                                                            readOnly
+                                                        />
+                                                    </div>
+
+                                                    {/* Query Subject */}
+                                                    <div style={{ marginTop: "10px" }}>
+                                                        <label htmlFor="QuerySubject" style={{ fontWeight: "bold" }}>Query Subject:</label>
+                                                        <input
+                                                            type="text"
+                                                            id="QuerySubject"
+                                                            style={{
+                                                                ...formControlSm,
+                                                                backgroundColor: "#f8f9fa", // Light gray background for disabled look
+                                                                color: "#6c757d",          // Muted text color
+                                                                cursor: "not-allowed",     // Change cursor to indicate non-editable
+                                                            }}
+                                                            className="form-control"
+                                                            value={selectedRow.QuerySubject || "N/A"}
+                                                            readOnly
+                                                        />
+                                                    </div>
+
+                                                    {/* Query Description */}
+                                                    <div style={{ marginTop: "10px" }}>
+                                                        <label htmlFor="QueryDescription" style={{ fontWeight: "bold" }}>Query Description:</label>
+                                                        <textarea
+                                                            id="QueryDescription"
+                                                            style={{
+                                                                ...formControlSm,
+                                                                backgroundColor: "#f8f9fa", // Light gray background for disabled look
+                                                                color: "#6c757d",          // Muted text color
+                                                                height: "100px",           // Adjust height as needed
+                                                                resize: "none",            // Disable resizing if required
+                                                                cursor: "not-allowed",     // Change cursor to indicate non-editable
+                                                            }}
+                                                            className="form-control"
+                                                            value={selectedRow.QueryDescription || "N/A"}
+                                                            readOnly
+                                                        />
+                                                    </div>
+
+
+
+                                                </div>
+
+                                            </Collapse>
+                                        </AccordionItem>
+
+
+                                    </Accordion>
+                                </Row>
                                 <Row className="gy-3">
-                                    <Col md={6} xs={12}>
-                                        <Label for="ticketNumber">Ticket Number:</Label>
-                                        <Field
-                                            name="TicketNumber"
-                                            type="text"
-                                            className="form-control"
-                                            readOnly
-                                            disabled={userType === "Infinity-ERP"}
-                                        />
-                                    </Col>
                                     <Col md={6} xs={12}>
                                         <Label for="SupportUser">Support User:</Label>
                                         <Field
@@ -149,7 +349,7 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
                                             className="text-danger"
                                         />
                                     </Col>
-                                    <Col md={4} xs={12}>
+                                    <Col md={6} xs={12}>
                                         <Label for="CurrentStatus">Status:</Label>
                                         <Field
                                             name="CurrentStatus"
@@ -170,7 +370,7 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
                                             className="text-danger"
                                         />
                                     </Col>
-                                    <Col md={4} xs={12}>
+                                    <Col md={6} xs={12}>
                                         <Label for="statusDate">Status Date:</Label>
                                         <Flatpickr
                                             id="statusDate"
@@ -186,7 +386,7 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
                                             className="text-danger"
                                         />
                                     </Col>
-                                    <Col md={4} xs={12}>
+                                    <Col md={6} xs={12}>
                                         <Label for="DueDate">Due Date:</Label>
                                         <Flatpickr
                                             id="DueDate"
@@ -217,7 +417,27 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
                                             className="text-danger"
                                         />
                                     </Col>
+                                    {/* ShareStatus Checkbox */}
+                                    <Col xs={12}>
+                                        <div className="form-check">
+                                            <Field
+                                                type="checkbox"
+                                                name="ShareStatus"
+                                                className="form-check-input"
+                                                id="ShareStatus"
+                                            />
+                                            <Label for="ShareStatus" className="form-check-label">
+                                                Share Status
+                                            </Label>
+                                        </div>
+                                        <ErrorMessage
+                                            name="ShareStatus"
+                                            component="div"
+                                            className="text-danger"
+                                        />
+                                    </Col>
                                 </Row>
+
                                 <ModalFooter>
                                     <Button color="primary" type="submit" disabled={userType === "Infinity-ERP"}>
                                         Submit

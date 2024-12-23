@@ -10,17 +10,21 @@ const ReviewPending = ({ queries }) => {
 
     // Filter queries to exclude those with status "Done"
     const filteredQueries = queries?.filter(
-        (query) => query.CurrentStatus !== "Done"
+        (query) => query.CurrentStatus !== null&&query.CurrentStatus!=="Approval Pending"&&query.CurrentStatus!=="Done"
     ) || [];
 
     // Handle card click: Set data to localStorage and navigate to the ticket details page
     const handleCardClick = (queryData) => {
-        localStorage.setItem("query", JSON.stringify(queryData));
-        navigate("/ticketdetails"); // Navigate to your ticket details page
+        
+    // localStorage.setItem("query", JSON.stringify(query));
+    window.location.href = `${window.location.origin}/Support/TrackQuery?QueryID=${queryData.SupportID}`;
+
+    setSelectedRow(queryData);
+ // Navigate to your ticket details page
     };
 
     if (filteredQueries.length === 0) {
-        return <p className="text-muted">No review pending queries available.</p>;
+        return <p className="text-muted">No Currently Active queries available.</p>;
     }
 
     return (

@@ -184,3 +184,7 @@ export const Vendor_Post_ChangePassword=(data)=>{
 }
 
 export const Ticket_GET_UploadMedia = (masterURL) => api.get(masterURL);
+
+export const Approval_Post_Status=(data)=>{
+  api.create(url.POST_APPROVAL_PENDING,data);
+}

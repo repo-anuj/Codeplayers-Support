@@ -1,5 +1,6 @@
 // Updated imports
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
     Row,
     Col,
@@ -17,9 +18,14 @@ import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import moment from "moment";
-import { POST_DailyStatus } from "../../../slices/thunks";
+import { POST_ApprovalPending} from "../../../slices/thunks";
 import classnames from "classnames";
 const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
+
+    const data=useSelector((state)=>state.ApprovalPending.data);
+    const error = useSelector((state) => state.ApprovalPending.error);
+    const loading = useSelector((state) => state.ApprovalPending.loading);
+    const success = useSelector((state) => state.ApprovalPending.success);
     const dispatch = useDispatch();
     const vendorUser = JSON.parse(localStorage.getItem("vendorUser"
     ));
@@ -66,14 +72,15 @@ const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
                 SupportID: selectedRow.SupportID,
                 IsRejected: values.IsRejected,
                 IsApproved: values.IsApproved,
-                ApprovalDate: moment().format(),
-                ApprovedBy: localStorage.getItem("userID"),
+                ApprovedOn: moment().format(),
+                ApprovedBy: JSON.parse(localStorage.getItem("vendorUser")).subUserID,
                 ApprovalRemarks: values.ApprovalRemarks,
             };
 
-            await dispatch(POST_DailyStatus({ body: payload }));
+            await dispatch(POST_ApprovalPending({ body: payload }));
             toggleModal(); // Close modal after submission
         } catch (error) {
+            alert(error)
             console.error("Error during form submission:", error);
         } finally {
             setSubmitting(false);
@@ -94,7 +101,11 @@ const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
         setCol1(false);
         setCol3(false);
     };
-
+    const formControlSm = {
+        height: "30px",
+        fontSize: "12px",
+        padding: "5px",
+    };
     const toggleCol3 = () => {
         setCol3(!col3);
         setCol1(false);
@@ -118,7 +129,7 @@ const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
                             <Form>
                                 <Row className="gy-3">
                                     <Accordion id="query-details-accordion" flush>
-                                        <AccordionItem className="material-shadow">
+                                        <AccordionItem className="material-shadow" style={{ border: "1px solid #dee2e6" }}>
                                             <h2 className="accordion-header" id="headingSubject">
                                                 <button
                                                     className={classnames("accordion-button", { collapsed: !col1 })}
@@ -141,7 +152,7 @@ const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
                                                         }}
                                                     >
                                                         <Col xs={12} style={{ fontSize: "12px" }}>
-                                                            {/* Name */}
+                                                            {/* Name and Ticket No */}
                                                             <div style={{ display: "flex", justifyContent: "space-between" }}>
                                                                 <span style={{ fontWeight: "bold" }}>{dummyData.name}</span>
                                                                 <div>
@@ -159,7 +170,6 @@ const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
                                                                     alignItems: "center", // Align vertically for better appearance
                                                                 }}
                                                             >
-                                                                {/* Mobile and Email */}
                                                                 <span
                                                                     style={{
                                                                         color: "#6c757d",
@@ -172,8 +182,6 @@ const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
                                                                 >
                                                                     {dummyData.mobile} | {dummyData.email}
                                                                 </span>
-
-                                                                {/* Date and Time */}
                                                                 <span
                                                                     style={{
                                                                         maxWidth: "50%", // Set a maximum width
@@ -200,15 +208,75 @@ const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
                                                             </div>
 
                                                             {/* Client Name */}
-
                                                             <div>
                                                                 <span>{dummyData.clientName}</span>
                                                             </div>
 
-
+                                                            
                                                         </Col>
                                                     </Row>
+                                                    {/* Query Menu */}
+                                                    {/* Query Menu */}
+                                                    {/* Query Menu */}
+                                                    {/* Query Menu */}
+                                                    <div style={{ marginTop: "10px" }}>
+                                                        <label htmlFor="QueryMenu" style={{ fontWeight: "bold" }}>Query Menu:</label>
+                                                        <input
+                                                            type="text"
+                                                            id="QueryMenu"
+                                                            style={{
+                                                                ...formControlSm,
+                                                                backgroundColor: "#f8f9fa", // Light gray background for disabled look
+                                                                color: "#6c757d",          // Muted text color
+                                                                cursor: "not-allowed",     // Change cursor to indicate non-editable
+                                                            }}
+                                                            className="form-control"
+                                                            value={selectedRow.MenuCode || "N/A"}
+                                                            readOnly
+                                                        />
+                                                    </div>
+
+                                                    {/* Query Subject */}
+                                                    <div style={{ marginTop: "10px" }}>
+                                                        <label htmlFor="QuerySubject" style={{ fontWeight: "bold" }}>Query Subject:</label>
+                                                        <input
+                                                            type="text"
+                                                            id="QuerySubject"
+                                                            style={{
+                                                                ...formControlSm,
+                                                                backgroundColor: "#f8f9fa", // Light gray background for disabled look
+                                                                color: "#6c757d",          // Muted text color
+                                                                cursor: "not-allowed",     // Change cursor to indicate non-editable
+                                                            }}
+                                                            className="form-control"
+                                                            value={selectedRow.QuerySubject || "N/A"}
+                                                            readOnly
+                                                        />
+                                                    </div>
+
+                                                    {/* Query Description */}
+                                                    <div style={{ marginTop: "10px" }}>
+                                                        <label htmlFor="QueryDescription" style={{ fontWeight: "bold" }}>Query Description:</label>
+                                                        <textarea
+                                                            id="QueryDescription"
+                                                            style={{
+                                                                ...formControlSm,
+                                                                backgroundColor: "#f8f9fa", // Light gray background for disabled look
+                                                                color: "#6c757d",          // Muted text color
+                                                                height: "100px",           // Adjust height as needed
+                                                                resize: "none",            // Disable resizing if required
+                                                                cursor: "not-allowed",     // Change cursor to indicate non-editable
+                                                            }}
+                                                            className="form-control"
+                                                            value={selectedRow.QueryDescription || "N/A"}
+                                                            readOnly
+                                                        />
+                                                    </div>
+
+
+
                                                 </div>
+
                                             </Collapse>
                                         </AccordionItem>
 
@@ -229,7 +297,9 @@ const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
                                         />
                                     </Col>
                                 </Row>
+                                <br />
                                 <ModalFooter>
+
                                     <Button
                                         color="success"
                                         onClick={() => {
