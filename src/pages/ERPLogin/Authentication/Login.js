@@ -67,7 +67,23 @@ const Login = (props) => {
         },10); // 2-second delay
       }
     }
-  }, [autoSubmitted]); // Re-run if autoSubmitted changes
+  }, [autoSubmitted]);
+
+  useEffect(() => {
+    const lastVisitedPath = localStorage.getItem('lastVisitedPath');
+    const userType = localStorage.getItem('userType');
+
+    if(success && lastVisitedPath){
+      window.location.href = lastVisitedPath;
+      localStorage.removeItem('lastVisitedPath');
+    }
+    else if(success && userType === "Infinity-ERP") {
+      navigate("/InfinityDashboard");
+    }
+    else if(success && userType === "Support-Portal") {
+      navigate("/support-dashboard");
+    }
+  }, [success, navigate]);
 
   useEffect(() => {
     if (success) {
@@ -109,7 +125,7 @@ const Login = (props) => {
     console.log(error);
 
   const handleRegister = () => {
-    navigate("/register"); // Assuming the register route is "/register"
+    navigate("/register");
   };
 
   document.title = "Infinity-X | CODEPLAYERS Business System Private Limited";

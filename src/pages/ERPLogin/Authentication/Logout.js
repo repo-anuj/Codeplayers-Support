@@ -24,7 +24,7 @@ const Logout = (props) => {
   }, [dispatch]);
 
   if (isUserLogout) {
-    return <Navigate to="/ERPLogin" />;
+    return <Navigate to="/landing" />;
   }
 
   return <></>;

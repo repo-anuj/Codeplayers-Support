@@ -31,6 +31,13 @@ const TicketDetails = () => {
 
   // Extract query parameters from the URL
   const query = JSON.parse(localStorage.getItem('query'));
+
+  //ticket ID
+  const url = window.location.href;
+  const queryParams = new URL(url).searchParams;
+  const queryID = queryParams.get("QueryID");
+
+
   console.log(JSON.stringify(query));
   const SupportID = query?.SupportID;
   const data2 = useSelector((state) => state.TicketDetail.data) || [];
@@ -51,12 +58,17 @@ const TicketDetails = () => {
   console.log("Rating " + JSON.stringify(ratingData));
   const [IDdailyStatus,setIDdailyStatus]=useState([]);
   const [ticketData,setTicketData]=useState([]);
+
+
   useEffect(() => {
-    dispatch(GET_TicketDetails(SupportID));
+    dispatch(GET_TicketDetails(queryID));
     setTicketData(data2)
   }, [dispatch,SupportID]);
   useEffect(() => {
-    if (SupportID) {
+    if (queryID) {
+      dispatch(GET_DailyStatusDetails(queryID));
+    }
+    else if(SupportID){
       dispatch(GET_DailyStatusDetails(SupportID));
     }
   }, [SupportID, dispatch]);

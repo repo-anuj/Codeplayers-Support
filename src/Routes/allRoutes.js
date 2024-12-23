@@ -162,7 +162,7 @@ const authProtectedRoutes = [
     ),
   },
   {
-    path: "/TicketDetails",
+    path: "/Support/TrackQuery",
     component: (
       <RouteProtection
         component={<TicketDetails />}
