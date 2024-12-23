@@ -3,23 +3,56 @@ import { useNavigate } from "react-router-dom";
 
 const Navdata = () => {
   const history = useNavigate();
+  
   const [isMultiLevel, setIsMultiLevel] = useState(false);
+  
   const userType = localStorage.getItem("userType");
-  const [iscurrentState, setIscurrentState] = useState("Dashboard");
+  
+  const [iscurrentState, setIscurrentState] = useState("Support");
+  
+  
+  const [isSupport,setIsSupport]=useState(false);
+  const [isTraining,setIsTraining]=useState(false);
+  const [isUser,setIsUser]=useState(false);
+  const [isProducts,setIsProducts]=useState(false);
+  const [isLicense,setIsLicense]=useState(false);
+
+
   const userRole=localStorage.getItem("userRole");
-  const updateIconSidebar = (e) => {
+  
+  
+  
+  function updateIconSidebar(e) {
     if (e && e.target && e.target.getAttribute("subitems")) {
       const ul = document.getElementById("two-column-menu");
       const iconItems = ul.querySelectorAll(".nav-icon.active");
-      iconItems.forEach((item) => {
+      let activeIconItems = [...iconItems];
+      activeIconItems.forEach((item) => {
         item.classList.remove("active");
-        const id = item.getAttribute("subitems");
-        if (document.getElementById(id)) {
+        var id = item.getAttribute("subitems");
+        if (document.getElementById(id))
           document.getElementById(id).classList.remove("show");
-        }
       });
     }
-  };
+  }
+  useEffect(()=>{
+    document.body.classList.remove("twoColumnPanel");
+    if(iscurrentState!=="Support"){
+      setIsSupport(false);
+    }
+    if (iscurrentState !== "Training") {
+      setIsTraining(false);
+    }
+    if (iscurrentState !== "User") {
+      setIsUser(false);
+    }
+    if (iscurrentState !== "License") {
+      setIsLicense(false);
+    }
+    if (iscurrentState !== "Product") {
+      setIsProducts(false);
+    }
+  },[isUser,isLicense,isProducts,isSupport,isTraining,iscurrentState,isMultiLevel])
 
   const commonMenuItems = {
     support: {
@@ -29,11 +62,11 @@ const Navdata = () => {
       link: "/#",
       click: (e) => {
         e.preventDefault();
-        setIsMultiLevel(!isMultiLevel);
-        setIscurrentState("MultiLevel");
+        setIsSupport(!isSupport);
+        setIscurrentState("Support");
         updateIconSidebar(e);
       },
-      stateVariables: isMultiLevel,
+      stateVariables: isSupport,
       subItems: [
         { id: "Support.Dashboard", label: "Dashboard", link: "/support-dashboard" },
         { id: "Support.Register", label: "Register", link: "/support-register" },
@@ -47,11 +80,11 @@ const Navdata = () => {
       link: "/#",
       click: (e) => {
         e.preventDefault();
-        setIsMultiLevel(!isMultiLevel);
-        setIscurrentState("MultiLevel");
+        setIsTraining(!isTraining);
+        setIscurrentState("Training");
         updateIconSidebar(e);
       },
-      stateVariables: isMultiLevel,
+      stateVariables: isTraining,
       subItems: [
         { id: "Training.Dashboard", label: "Dashboard", link: "/training-dashboard" },
         { id: "Training.Register", label: "Register", link: "/training-register" },
@@ -64,11 +97,11 @@ const Navdata = () => {
       link: "/#",
       click: (e) => {
         e.preventDefault();
-        setIsMultiLevel(!isMultiLevel);
-        setIscurrentState("MultiLevel");
+        setIsUser(!isUser);
+        setIscurrentState("User");
         updateIconSidebar(e);
       },
-      stateVariables: isMultiLevel,
+      stateVariables: isUser,
       subItems: [
         { id: "Users", label: "User List", link: "/users" },
         { id: "User.AllotTraining", label: "Allot Training", link: "/training-allotment" },
@@ -81,11 +114,11 @@ const Navdata = () => {
       link: "/#",
       click: (e) => {
         e.preventDefault();
-        setIsMultiLevel(!isMultiLevel);
-        setIscurrentState("MultiLevel");
+        setIsProducts(!isProducts);
+        setIscurrentState("Product");
         updateIconSidebar(e);
       },
-      stateVariables: isMultiLevel,
+      stateVariables: isProducts,
       subItems: [
         { id: "Products.Buy", label: "Buy", link: "/Products-buy" },
         { id: "Products.History", label: "History", link: "/Products-history" },
@@ -99,27 +132,7 @@ const Navdata = () => {
 
   let menuItems;
   
-  if (userType === "Infinity-ERP") {
-    
-  } else if (userType === "Vend-X") {
-    menuItems = [
-      { id: "Quotation", label: "Quotation Register", icon: "ri-calculator-fill", link: "/Quotation-register" },
-    ];
-  } else if(userType==="Support-Portal"&&userRole=="Admin"){
-    menuItems=[
-      commonMenuItems.support,
-      commonMenuItems.training,
-      { id: "Users", label: "Users", icon: "ri-calculator-fill", link: "/users" },
-    ]
-  }else if(userType==="CPTeam"){
-    menuItems=[
-      commonMenuItems.support,
-      commonMenuItems.training
-    ]
-  }
-  else {
-    menuItems = [commonMenuItems.support, commonMenuItems.training, commonMenuItems.user,commonMenuItems.products];
-  }
+  
 
   if (userType === "Infinity-ERP") {
     if (userRole === "Admin") {
@@ -187,13 +200,7 @@ const Navdata = () => {
       ];
     }
   }
-  useEffect(() => {
-    document.body.classList.remove("twocolumn-panel");
-    if (iscurrentState === "Widgets") {
-      history("/widgets");
-      document.body.classList.add("twocolumn-panel");
-    }
-  }, [history, iscurrentState]);
+  
 
   return <React.Fragment>{menuItems}</React.Fragment>;
 };

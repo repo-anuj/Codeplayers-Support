@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 import BreadCrumb from "../../../../Components/Common/BreadCrumb";
 import TicketDetailsCard from "../../../../Components/Common/TicketDetailsCard.js";
 import moment from "moment";
-import CPVoucherNumAttachmentsCard from "../../../../Components/Common/CPVoucherNumAttachmentsCard.js";
+// import CPVoucherNumAttachmentsCard from "../../../../Components/Common/CPVoucherNumAttachmentsCard.js";
 import TicketRatingsCard from "../../../../Components/Common/TicketRatingsCard.js";
 import CPStepsTracking from "../../../../Components/Common/CPStepsTracking.js";
 import DailyStatusModal from "../DailyStatusModal.js";
@@ -21,6 +21,7 @@ import { POST_Rating } from "../../../../slices/Dashboards/TicketDetails/Rating/
 import { useSelector, useDispatch } from "react-redux";
 import RaiseTicketModal from "../raiseticket/RaiseTicketModal.js";
 import { GET_DailyStatusDetails } from "../../../../slices/thunks.js";
+import CPVoucherNumCameraCaptures from "../../../../Components/CPComponents/CPVouchers/CPVoucherNumCameraCaptures.js";
 
 const TicketDetails = () => {
   const location = useLocation();
@@ -228,21 +229,36 @@ const TicketDetails = () => {
                   <table className="table table-borderless table-sm mb-0 w-100">
                     <tbody>
                       <tr>
-                        <td
+                        <span
                           className="fw-semibold"
-                          style={{ whiteSpace: "nowrap", width: "25%" }}
+                          style={{
+                            whiteSpace: "nowrap",  // Keeps the text on a single line
+                            width: "auto",         // Adjust to content width
+                            paddingRight: "10px",         // Remove any default padding
+                            textAlign: "left",     // Ensure left alignment for both cells
+                          }}
                         >
                           Subject:
-                        </td>
-                        <td className="w-75">{data2[0]?.QuerySubject}</td>
+                        </span>
+                        <span
+                          style={{
+                            padding: "0",          // Remove padding for this cell as well
+                            textAlign: "left",     // Left-align the text for consistency
+                          }}
+                        >
+                          {data2[0]?.QuerySubject}
+                        </span>
                       </tr>
+
+
                       <tr>
                         <td
                           className="fw-semibold"
-                          style={{ whiteSpace: "nowrap" }}
+                          style={{ whiteSpace: "pre-line" }}
                         >
                           Query Description:
                         </td>
+
                       </tr>
                       <tr>
                         <td colSpan="2">
@@ -258,8 +274,18 @@ const TicketDetails = () => {
                               boxSizing: "border-box", // Prevents overflow by including padding in width calculation
                             }}
                           >
-                            {data2[0]?.QueryDescription}
+                            {data2[0]?.QueryDescription ? (
+                              data2[0]?.QueryDescription.split("\n").map((line, index) => (
+                                <React.Fragment key={index}>
+                                  {line}
+                                  <br />
+                                </React.Fragment>
+                              ))
+                            ) : (
+                              <p>No description available</p>
+                            )}
                           </div>
+
                         </td>
                       </tr>
                       <tr>
@@ -346,7 +372,7 @@ const TicketDetails = () => {
                 details={clientDetails}
                 icon="ri-user-3-line"
               />
-              <CPVoucherNumAttachmentsCard />
+              <CPVoucherNumCameraCaptures voucherdata={data2[0]?.SupportID}/>
               {query.CompletedOn !== "0001-01-01T00:00:00" && (
                 <TicketRatingsCard
                   onSubmitRating={handleRatingSubmit}

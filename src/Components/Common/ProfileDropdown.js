@@ -9,35 +9,14 @@ import {
 
 import { logoutERPUser, logoutLicenseUser } from "../../slices/thunks";
 //import images
-import avatar1 from "../../assets/images/users/avatar-1.jpg";
+import { FaUserCircle } from "react-icons/fa";
 import { createSelector } from "reselect";
 
 const ProfileDropdown = () => {
-  const profiledropdownData = createSelector(
-    (state) => state.Profile,
-    (user) => user.user
-  );
-  // Inside your component
-  const user = useSelector(profiledropdownData);
+  const userName=JSON.parse(localStorage.getItem("vendorUser"))?.subUserName;
 
-  const [userName, setUserName] = useState("Admin");
-
-  useEffect(() => {
-    if (sessionStorage.getItem("authUser")) {
-      const obj = JSON.parse(sessionStorage.getItem("authUser"));
-      setUserName(
-        process.env.REACT_APP_DEFAULTAUTH === "fake"
-          ? obj.username === undefined
-            ? user.first_name
-              ? user.first_name
-              : obj.data.first_name
-            : "Admin" || "Admin"
-          : process.env.REACT_APP_DEFAULTAUTH === "firebase"
-          ? obj.email && obj.email
-          : "Admin"
-      );
-    }
-  }, [userName, user]);
+  const userRole=JSON.parse(localStorage.getItem("vendorUser"))?.userRole
+  
 
   //Dropdown Toggle
   const [isProfileDropdown, setIsProfileDropdown] = useState(false);
@@ -53,17 +32,13 @@ const ProfileDropdown = () => {
       >
         <DropdownToggle tag="button" type="button" className="btn shadow-none">
           <span className="d-flex align-items-center">
-            <img
-              className="rounded-circle header-profile-user"
-              src={avatar1}
-              alt="Header Avatar"
-            />
+            <FaUserCircle size={40} color="#ccc" />
             <span className="text-start ms-xl-2">
               <span className="d-none d-xl-inline-block ms-1 fw-medium user-name-text">
                 {userName}
               </span>
               <span className="d-none d-xl-block ms-1 fs-12 text-muted user-name-sub-text">
-                Founder
+                {userRole}
               </span>
             </span>
           </span>

@@ -258,7 +258,7 @@ const authProtectedRoutes = [
         allowedUserTypes={["Infinity-ERP", "Support-Portal"]}
       />
     ),
-  }
+  },
 ];
 
 const publicRoutes = [

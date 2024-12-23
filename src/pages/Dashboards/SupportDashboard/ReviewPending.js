@@ -44,14 +44,14 @@ const ReviewPending = ({ queries }) => {
                                     key={index}
                                     onClick={() => handleCardClick(individualData)} // Open modal on card click
                                     style={{
-                                        cursor: "pointer",
+                                        cursor: "pointer", // Add hover pointer
                                         borderBottom: "1px solid #e9ecef",
                                         backgroundColor:
                                             index % 2 === 0
                                                 ? "rgba(208, 233, 255, 0.2)" // Light blue shade
                                                 : "rgba(208, 255, 214, 0.2)", // Light green shade
                                     }}
-                                    className="text-muted mb-3 fs-11"
+                                    className="text-muted px-3 py-2" // Add padding and margin for consistency
                                 >
                                     <div className="d-flex align-items-center">
                                         <div className="avatar-xs flex-shrink-0">
@@ -73,10 +73,12 @@ const ReviewPending = ({ queries }) => {
                                                 <span className="text-muted fs-12 mb-0">
                                                     <i className="mdi mdi-circle-medium text-success fs-15 me-1"></i>
                                                     Date:{" "}
-                                                    {moment.utc(individualData.ReportDateTime).local().format(
-                                                        "DD MMM - hh:mm A"
-                                                    )}
+                                                    {moment
+                                                        .utc(individualData.ReportDateTime)
+                                                        .local()
+                                                        .format("DD MMM - hh:mm A")}
                                                 </span>
+
                                                 <span className="text-muted fs-12 mb-0">
                                                     <i className="mdi mdi-circle-medium text-success fs-15 me-1"></i>
                                                     User: {individualData.TicketUser}
@@ -99,6 +101,7 @@ const ReviewPending = ({ queries }) => {
                                 </div>
                             ))}
                         </div>
+
                     </SimpleBar>
                 </CardBody>
             </Card>

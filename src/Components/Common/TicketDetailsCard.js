@@ -50,15 +50,18 @@ const TicketDetailsCard = ({ labelTitle, details, isCritical, icon }) => {
         </div>
       </CardHeader>
       <CardBody>
-        <table className="table table-borderless table-sm mb-0">
-          <tbody>
-            {Object.keys(details).map((key) =>
-              renderDetailRow(key, details[key])
-            )}
-          </tbody>
-        </table>
+        {details?.Name===undefined && Object.keys(details).length > 0 ? (
+          <table className="table table-borderless table-sm mb-0">
+            <tbody>
+              {Object.keys(details).map((key) => renderDetailRow(key, details[key]))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="text-muted">{labelTitle} not updated yet</p>
+        )}
       </CardBody>
     </Card>
+
   );
 };
 
