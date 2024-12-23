@@ -134,8 +134,8 @@ const Navdata = () => {
   
   
 
-  if (userType === "Infinity-ERP") {
-    if (userRole === "Admin") {
+  
+    if (userRole === "Client Admin") {
       menuItems = [
         commonMenuItems.license,
         commonMenuItems.support,
@@ -146,7 +146,7 @@ const Navdata = () => {
 
       ];
     }
-    else if (userRole === "Manager") {
+    else if (userRole === "Client Manager") {
       menuItems = [
         
         commonMenuItems.support,
@@ -157,7 +157,7 @@ const Navdata = () => {
 
       ];
     }
-    else if (userRole === "User") {
+    else if (userRole === "Client User") {
       menuItems = [
         
         commonMenuItems.support,
@@ -167,8 +167,8 @@ const Navdata = () => {
 
       ];
     }
-  } else if (userType === "Support-Portal") {
-    if (userRole === "Admin") {
+  
+    if (userRole === "Support Admin") {
       menuItems = [
         
         commonMenuItems.support,
@@ -178,7 +178,7 @@ const Navdata = () => {
 
 
       ];
-    } else if (userRole === "Manager") {
+    } else if (userRole === "Support Manager") {
       menuItems = [
         
         commonMenuItems.support,
@@ -189,7 +189,7 @@ const Navdata = () => {
 
       ];
     }
-    else if (userRole === "User") {
+    else if (userRole === "Support User") {
       menuItems = [
         
         commonMenuItems.support,
@@ -198,7 +198,7 @@ const Navdata = () => {
 
 
       ];
-    }
+   
   }
   
 

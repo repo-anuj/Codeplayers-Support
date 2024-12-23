@@ -189,8 +189,8 @@ const UserRegisterModal = ({ isOpen, toggle }) => {
                                 onBlur={formik.handleBlur}
                             >
                                 <option value="">Select a Role</option>
-                                <option value="Manager">Manager</option>
-                                <option value="User">User</option>
+                                <option value="Client-Manger">Client-Manager</option>
+                                <option value="Client-User">Client-User</option>
                             </Input>
                         </div>
                         {formik.touched.userRole && formik.errors.userRole && (
