@@ -93,7 +93,7 @@ const Login = (props) => {
         navigate("/vendor-dashboard");
       }
       else if (userType == "Infinity-ERP") {
-        navigate("/InfinityDashboard");
+        navigate("/support-dashboard");
       }
       else if (userType == "Support-Portal") {
         navigate("/support-dashboard");

@@ -31,6 +31,7 @@ const TicketDetails = () => {
 
   // Extract query parameters from the URL
   const query = JSON.parse(localStorage.getItem('query'));
+  
 
   //ticket ID
   const url = window.location.href;
@@ -385,7 +386,7 @@ const TicketDetails = () => {
                 icon="ri-user-3-line"
               />
               <CPVoucherNumCameraCaptures voucherdata={data2[0]?.SupportID}/>
-              {query.CompletedOn !== "0001-01-01T00:00:00" && (
+              {query?.CompletedOn !== "0001-01-01T00:00:00" && (
                 <TicketRatingsCard
                   onSubmitRating={handleRatingSubmit}
                   rated={rated}
