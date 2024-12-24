@@ -162,7 +162,7 @@ const authProtectedRoutes = [
     ),
   },
   {
-    path: "/TicketDetails",
+    path: "/Support/TrackQuery",
     component: (
       <RouteProtection
         component={<TicketDetails />}
@@ -258,7 +258,7 @@ const authProtectedRoutes = [
         allowedUserTypes={["Infinity-ERP", "Support-Portal"]}
       />
     ),
-  }
+  },
 ];
 
 const publicRoutes = [

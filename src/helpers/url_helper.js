@@ -94,6 +94,7 @@ export const GET_LIST_OF_SUPPORTSTATUS="/api/Support/StatusList";
 export const POST_DAILY_STATUS = "/api/Support/DailyStatus/";
 export const GET_DAILYSTATUS_DETAILS = "API/Support/DailyStatus/";
 export const GET_ATTACHMENT_DETAILS = "API/Support/TicketMedia/";
+export const POST_APPROVAL_PENDING="api/support/Approval/"
 export const POST_VENDOR_CHANGE_PASSWORD="";
 // export const POST_License_Validation =
 //   "https://api5.codeplayers.in/api/authentication/authenticate";

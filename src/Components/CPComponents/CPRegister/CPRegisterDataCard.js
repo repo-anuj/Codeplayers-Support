@@ -14,6 +14,8 @@ import {
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import { textSizeForOverflow,truncateText } from "../TextSizeForOverflow";
+import { api } from "../../../config";
+import { WindowScrollController } from "@fullcalendar/core/internal";
 const QueryCard = ({ data, onButtonClick ,query}) => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState(query); // State to store search input
@@ -22,7 +24,7 @@ const QueryCard = ({ data, onButtonClick ,query}) => {
     useEffect(()=>{
         setSearchQuery(query);
     },[query]);
-    
+    const APIROUTE=api.API_URL;
     const formatDuration = (duration) => {
         const days = Math.floor(duration.asDays());
         const hours = duration.hours();
@@ -53,10 +55,12 @@ const QueryCard = ({ data, onButtonClick ,query}) => {
                             <Card className="mb-0">
                                 <CardHeader
                                     onClick={() => {
-                                        localStorage.setItem("query", JSON.stringify(query));
-                                        navigate("/TicketDetails");
+                                        // localStorage.setItem("query", JSON.stringify(query));
+                                        window.location.href = `${window.location.origin}/Support/TrackQuery?QueryID=${query.SupportID}`;
+
                                         setSelectedRow(query);
                                     }}
+
                                 >
                                     <div className="align-items-center d-flex">
                                         <h5

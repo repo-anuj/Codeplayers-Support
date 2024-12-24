@@ -29,12 +29,21 @@ export const POST_Vendor_Login = createAsyncThunk(
 export const logoutLicenseUser = async () => {
   try {
     await removeLocalStorageItemsForLogout();
-    window.location.href = "/Login";
-    dispatch(logoutUserSuccess(true));
+
+    const currentPath = window.location.href;
+    const urlPatternWithID = /\/somePath\/\d+/; // Update this regex to match the pattern for your specific ID, e.g., `/somePath/123`
+
+    if (urlPatternWithID) {
+      window.location.href = `/landing`;
+    } else {
+      localStorage.setItem('lastVisitedPath', currentPath);
+      window.location.href = "/landing";
+    }
   } catch (error) {
-    dispatch(error);
+    console.error("Error during logout:", error);
   }
 };
+
 
 function removeLocalStorageItemsForLogout() {
   return new Promise((resolve) => {
@@ -72,7 +81,7 @@ export const logoutERPUser = async () => {
   try {
     await removeLocalStorageItemsForLock();
 
-    window.location.replace("/ERPLogin");
+    window.location.replace("/landing");
   } catch (error) {
     console.error("Error during lockScreen operation:", error);
   }

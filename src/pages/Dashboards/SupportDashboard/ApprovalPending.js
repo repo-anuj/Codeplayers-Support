@@ -1,5 +1,6 @@
 // Updated imports
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import {
     Row,
     Col,
@@ -13,36 +14,48 @@ import {
     AccordionItem,
     Collapse
 } from "reactstrap";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import Flatpickr from "react-flatpickr";
-import {
-    GET_SupportDashboard,
-    GET_SUPPORTUSER,
-    GET_SUPPORTSTATUSLIST,
-    POST_DailyStatus,
-    PATCH_DailyStatus,
-} from "../../../slices/thunks";
 import moment from "moment";
+import { POST_ApprovalPending} from "../../../slices/thunks";
 import classnames from "classnames";
-const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
+const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
+
+    const data=useSelector((state)=>state.ApprovalPending.data);
+    const error = useSelector((state) => state.ApprovalPending.error);
+    const loading = useSelector((state) => state.ApprovalPending.loading);
+    const success = useSelector((state) => state.ApprovalPending.success);
     const dispatch = useDispatch();
-    const SupportUserData = useSelector((state) => state.SupportUser.data);
-    const SupportStatusData = useSelector((state) => state.SupportStatuses.data);
-    const userType=localStorage.getItem('userType');
-    // Synchronize modal state with the prop
+    const vendorUser = JSON.parse(localStorage.getItem("vendorUser"
+    ));
+    const formatLocalDateTime = (date) => {
+        const offset = date.getTimezoneOffset();
+        const localDate = new Date(date.getTime() - offset * 60 * 1000);
+        return localDate.toISOString().slice(0, 16);
+    };
+    const [clientName, setClientName] = useState("");
+    const dummyData = {
+        name: vendorUser.subUserName,
+        mobile: localStorage.getItem("mobileNumber"),
+        email: localStorage.getItem("userName"),
+        ticketNo: (parent === "Dashboard") ? ticketData : selectedRow?.TicketNumber,
+        clientName: clientName,
+        dateTime: formatLocalDateTime(new Date()),
+    };
+
+    useEffect(() => {
+        const storedClientName = vendorUser.subscriberName;
+        setClientName(
+            storedClientName || `${vendorUser.subscriberCode} - ${vendorUser.subscriberName}`
+        );
+    }, [vendorUser]);
+
     const [modal, setModal] = useState(modalOpen);
 
     useEffect(() => {
         setModal(modalOpen); // Sync modal state with parent
     }, [modalOpen]);
-
-    useEffect(() => {
-        dispatch(GET_SupportDashboard());
-        dispatch(GET_SUPPORTUSER());
-        dispatch(GET_SUPPORTSTATUSLIST());
-    }, [dispatch]);
 
     const toggleModal = () => {
         setModal(!modal);
@@ -50,128 +63,71 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
     };
 
     const validationSchema = Yup.object({
-        TicketNumber: Yup.string().required("Ticket Number is required"),
-        SupportUser: Yup.string().required("Support User is required"),
-        CurrentStatus: Yup.string().required("Status is required"),
-        statusDate: Yup.date().required("Status Date is required"),
-        DueDate: Yup.date().required("Due Date is required"),
-        solutionDetails: Yup.string().required("Solution Details are required"),
-        dailyID: Yup.string(),
-        ShareStatus: Yup.bool()
+        ApprovalRemarks: Yup.string().required("Approval Remarks are required"),
     });
 
     const handleSubmit = async (values, { setSubmitting }) => {
         try {
-            values.SupportID = selectedRow.SupportID;
-            if (!values.dailyID) {
-                await dispatch(POST_DailyStatus({ body: values }));
-            } else {
-                await dispatch(PATCH_DailyStatus({ body: values }));
-            }
+            const payload = {
+                SupportID: selectedRow.SupportID,
+                IsRejected: values.IsRejected,
+                IsApproved: values.IsApproved,
+                ApprovedOn: moment().format(),
+                ApprovedBy: JSON.parse(localStorage.getItem("vendorUser")).subUserID,
+                ApprovalRemarks: values.ApprovalRemarks,
+            };
+
+            await dispatch(POST_ApprovalPending({ body: payload }));
             toggleModal(); // Close modal after submission
         } catch (error) {
+            alert(error)
             console.error("Error during form submission:", error);
         } finally {
             setSubmitting(false);
         }
     };
-
-    const extractOptions = (data, idKey, nameKey) =>
-        data
-            ? data.map((item) => ({ id: item[idKey], name: item[nameKey] }))
-            : [];
-
-    const SupportUser = extractOptions(SupportUserData, "SubUserID", "Name");
-    const statusOptions = extractOptions(SupportStatusData, "StatusID", "Status");
-    //col
-    const vendorUser = JSON.parse(localStorage.getItem("vendorUser"
-        ));
-        const formatLocalDateTime = (date) => {
-            const offset = date.getTimezoneOffset();
-            const localDate = new Date(date.getTime() - offset * 60 * 1000);
-            return localDate.toISOString().slice(0, 16);
-        };
-        const [clientName, setClientName] = useState("");
-        const dummyData = {
-            name: vendorUser.subUserName,
-            mobile: localStorage.getItem("mobileNumber"),
-            email: localStorage.getItem("userName"),
-            ticketNo: (parent === "Dashboard") ? ticketData : selectedRow?.TicketNumber,
-            clientName: clientName,
-            dateTime: formatLocalDateTime(new Date()),
-        };
-    
-        useEffect(() => {
-            const storedClientName = vendorUser.subscriberName;
-            setClientName(
-                storedClientName || `${vendorUser.subscriberCode} - ${vendorUser.subscriberName}`
-            );
-        }, [vendorUser]);
     const [col1, setCol1] = useState(true);
-        const [col2, setCol2] = useState(false);
-        const [col3, setCol3] = useState(false);
-    
-        const toggleCol1 = () => {
-            setCol1(!col1);
-            setCol2(false);
-            setCol3(false);
-        };
-    
-        const toggleCol2 = () => {
-            setCol2(!col2);
-            setCol1(false);
-            setCol3(false);
-        };
-        const formControlSm = {
-            height: "30px",
-            fontSize: "12px",
-            padding: "5px",
-        };
-        const toggleCol3 = () => {
-            setCol3(!col3);
-            setCol1(false);
-            setCol2(false);
-        };
+    const [col2, setCol2] = useState(false);
+    const [col3, setCol3] = useState(false);
+
+    const toggleCol1 = () => {
+        setCol1(!col1);
+        setCol2(false);
+        setCol3(false);
+    };
+
+    const toggleCol2 = () => {
+        setCol2(!col2);
+        setCol1(false);
+        setCol3(false);
+    };
+    const formControlSm = {
+        height: "30px",
+        fontSize: "12px",
+        padding: "5px",
+    };
+    const toggleCol3 = () => {
+        setCol3(!col3);
+        setCol1(false);
+        setCol2(false);
+    };
     return (
         <Modal isOpen={modal} toggle={toggleModal} size="lg">
-            <ModalHeader toggle={toggleModal}>Update Query Details</ModalHeader>
+            <ModalHeader toggle={toggleModal}>Approval Pending Query</ModalHeader>
             <ModalBody>
-                {modalData || selectedRow ? (
+                {selectedRow ? (
                     <Formik
                         initialValues={{
-                            TicketNumber:
-                                modalData?.TicketNumber || selectedRow?.TicketNumber || "",
-                            SupportUser:
-                                modalData?.SupportUser || selectedRow?.SupportUser || "",
-                            CurrentStatus:
-                                modalData?.SupportStatus || selectedRow?.SupportStatus || "",
-                            statusDate: modalData?.StatusDate
-                                ? new Date(moment.utc(modalData.StatusDate).local()) // Convert modalData.StatusDate to local timezone
-                                : selectedRow?.StatusDate // Check selectedRow.StatusDate
-                                    ? (() => {
-                                        const [datePart, timePart] = selectedRow.StatusDate.split(" ");
-                                        const [day, month, year] = datePart.split("/").map(Number);
-                                        const [hours, minutes, seconds] = timePart.split(":").map(Number);
-                                        return new Date(year, month - 1, day, hours, minutes, seconds); // Default to selectedRow.StatusDate in local timezone
-                                    })()
-                                    : new Date(), // Default to current date if none is available
-
-                            DueDate: modalData?.DueDate && modalData.DueDate !== "0001-01-01T00:00:00"
-                                ? new Date(moment.utc(modalData.DueDate).local()) // Convert modalData.DueDate to local timezone
-                                : selectedRow?.DueDate && selectedRow.DueDate !== "0001-01-01T00:00:00"
-                                    ? new Date(moment.utc(selectedRow.DueDate).local()) // Convert selectedRow.DueDate to local timezone
-                                    : new Date(new Date().setDate(new Date().getDate() + 7)), // Default to current date + 7 days in local timezone
-
-                            solutionDetails: modalData?.Remarks || "",
-                            dailyID: modalData?.DailyID || "",
-                            ShareStatus: false,
+                            IsRejected: false,
+                            IsApproved: false,
+                            ApprovalRemarks: "",
                         }}
                         validationSchema={validationSchema}
                         onSubmit={handleSubmit}
                     >
-                        {({ values, setFieldValue }) => (
+                        {({ setFieldValue }) => (
                             <Form>
-                                <Row classname="gy-3">
+                                <Row className="gy-3">
                                     <Accordion id="query-details-accordion" flush>
                                         <AccordionItem className="material-shadow" style={{ border: "1px solid #dee2e6" }}>
                                             <h2 className="accordion-header" id="headingSubject">
@@ -256,7 +212,7 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
                                                                 <span>{dummyData.clientName}</span>
                                                             </div>
 
-
+                                                            
                                                         </Col>
                                                     </Row>
                                                     {/* Query Menu */}
@@ -326,121 +282,43 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
 
 
                                     </Accordion>
-                                </Row>
-                                <Row className="gy-3">
-                                    <Col md={6} xs={12}>
-                                        <Label for="SupportUser">Support User:</Label>
-                                        <Field
-                                            name="SupportUser"
-                                            as="select"
-                                            className="form-control"
-                                            disabled={userType === "Infinity-ERP"}
-                                        >
-                                            <option value="">Select</option>
-                                            {SupportUser.map((option) => (
-                                                <option key={option.id} value={option.id}>
-                                                    {option.name}
-                                                </option>
-                                            ))}
-                                        </Field>
-                                        <ErrorMessage
-                                            name="SupportUser"
-                                            component="div"
-                                            className="text-danger"
-                                        />
-                                    </Col>
-                                    <Col md={6} xs={12}>
-                                        <Label for="CurrentStatus">Status:</Label>
-                                        <Field
-                                            name="CurrentStatus"
-                                            as="select"
-                                            className="form-control"
-                                            disabled={userType === "Infinity-ERP"}
-                                        >
-                                            <option value="">Select</option>
-                                            {statusOptions.map((option) => (
-                                                <option key={option.id} value={option.id}>
-                                                    {option.name}
-                                                </option>
-                                            ))}
-                                        </Field>
-                                        <ErrorMessage
-                                            name="CurrentStatus"
-                                            component="div"
-                                            className="text-danger"
-                                        />
-                                    </Col>
-                                    <Col md={6} xs={12}>
-                                        <Label for="statusDate">Status Date:</Label>
-                                        <Flatpickr
-                                            id="statusDate"
-                                            className="form-control"
-                                            value={values.statusDate}
-                                            onChange={(dates) => setFieldValue("statusDate", dates[0])}
-                                            options={{ dateFormat: "d-m-Y" }}
-                                            disabled={userType === "Infinity-ERP"}
-                                        />
-                                        <ErrorMessage
-                                            name="statusDate"
-                                            component="div"
-                                            className="text-danger"
-                                        />
-                                    </Col>
-                                    <Col md={6} xs={12}>
-                                        <Label for="DueDate">Due Date:</Label>
-                                        <Flatpickr
-                                            id="DueDate"
-                                            className="form-control"
-                                            value={values.DueDate}
-                                            onChange={(dates) => setFieldValue("DueDate", dates[0])}
-                                            options={{ dateFormat: "d-m-Y" }}
-                                            disabled={userType === "Infinity-ERP"}
-                                        />
-                                        <ErrorMessage
-                                            name="DueDate"
-                                            component="div"
-                                            className="text-danger"
-                                        />
-                                    </Col>
                                     <Col xs={12}>
-                                        <Label for="solutionDetails">Solution Details:</Label>
+                                        <Label for="ApprovalRemarks">Approval Remarks:</Label>
                                         <Field
-                                            name="solutionDetails"
+                                            name="ApprovalRemarks"
                                             as="textarea"
                                             rows="4"
                                             className="form-control"
-                                            disabled={userType === "Infinity-ERP"}
                                         />
                                         <ErrorMessage
-                                            name="solutionDetails"
-                                            component="div"
-                                            className="text-danger"
-                                        />
-                                    </Col>
-                                    {/* ShareStatus Checkbox */}
-                                    <Col xs={12}>
-                                        <div className="form-check">
-                                            <Field
-                                                type="checkbox"
-                                                name="ShareStatus"
-                                                className="form-check-input"
-                                                id="ShareStatus"
-                                            />
-                                            <Label for="ShareStatus" className="form-check-label">
-                                                Share Status
-                                            </Label>
-                                        </div>
-                                        <ErrorMessage
-                                            name="ShareStatus"
+                                            name="ApprovalRemarks"
                                             component="div"
                                             className="text-danger"
                                         />
                                     </Col>
                                 </Row>
-
+                                <br />
                                 <ModalFooter>
-                                    <Button color="primary" type="submit" disabled={userType === "Infinity-ERP"}>
-                                        Submit
+
+                                    <Button
+                                        color="success"
+                                        onClick={() => {
+                                            setFieldValue("IsRejected", false);
+                                            setFieldValue("IsApproved", true);
+                                        }}
+                                        type="submit"
+                                    >
+                                        Approve Query
+                                    </Button>
+                                    <Button
+                                        color="danger"
+                                        onClick={() => {
+                                            setFieldValue("IsRejected", true);
+                                            setFieldValue("IsApproved", false);
+                                        }}
+                                        type="submit"
+                                    >
+                                        Reject Query
                                     </Button>
                                     <Button color="secondary" onClick={toggleModal}>
                                         Close
@@ -454,8 +332,7 @@ const DailyStatusModal = ({ modalOpen, modalData, selectedRow, onClose }) => {
                 )}
             </ModalBody>
         </Modal>
-
     );
 };
 
-export default DailyStatusModal;
+export default ApprovalPendingModal;

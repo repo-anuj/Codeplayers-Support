@@ -53,6 +53,8 @@ import DailyStatusByIdReducer from "./Dashboards/SupportDashboard/DailyStatus/Da
 
 import UploadMediaReducer from "./Dashboards/SupportDashboard/TicketDetails/GetMedia/reducer";
 
+import ApprovalPendingReducer from "./Dashboards/SupportDashboard/ApprovalPending/reducer"
+
 const rootReducer = combineReducers({
   Layout: LayoutReducer,
   VendorLogin: VendorLoginReducer,
@@ -84,6 +86,7 @@ const rootReducer = combineReducers({
   SupportStatuses: SupportStatusReducer,
   DailyStatusById:DailyStatusByIdReducer,
   UploadMedia: UploadMediaReducer,
+  ApprovalPending: ApprovalPendingReducer
    // UserNotifications: UserNotificationsReducer,
 });
 

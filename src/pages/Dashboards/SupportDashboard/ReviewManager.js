@@ -1,12 +1,13 @@
-import React, { useState } from "react";
+import React from "react";
 import { Card, CardBody, CardHeader, Col, Row } from "reactstrap";
 import IconsForVoucherType from "../../../Components/CPComponents/CPIcons/IconsForVoucherType";
 import SimpleBar from "simplebar-react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom"; // For navigation
-import DailyStatusModal from "./DailyStatusModal"; // Import the modal component
-
-const ReviewPending = ({ queries }) => {
+import ApprovalPendingModal from "./ApprovalPending";
+import { useState } from "react";
+// Ispproved(true false),approvedBy(SubUser),approvalMarks,approvedOn,IsRejected
+const ApprovalPending = ({ queries }) => {
     const navigate = useNavigate();
 
     // State to manage modal visibility and selected row data
@@ -15,8 +16,9 @@ const ReviewPending = ({ queries }) => {
     console.log(queries);
     // Filter queries to exclude those with status "Done"
     const filteredQueries = queries?.filter(
-        (query) => query.CurrentStatus === null
+        (query) => !query.IsApproved && !query.IsRejected
     ) || [];
+
 
     // Handle card click: Set data to localStorage and navigate to the ticket details page
     const handleCardClick = (queryData) => {
@@ -25,7 +27,7 @@ const ReviewPending = ({ queries }) => {
     };
 
     if (filteredQueries.length === 0) {
-        return <p className="text-muted">No review pending queries available.</p>;
+        return <p className="text-muted">No Approval pending queries available.</p>;
     }
 
     return (
@@ -33,7 +35,7 @@ const ReviewPending = ({ queries }) => {
             <Card className="card-height-100">
                 <CardHeader className="card-header align-items-center d-flex">
                     {IconsForVoucherType("Currently Active Queries")}
-                    <h4 className="card-title mb-0 flex-grow-1">Review By Support Pending</h4>
+                    <h4 className="card-title mb-0 flex-grow-1">Review By Approval Pending</h4>
                     <div className="fs-16 fw-bold">{filteredQueries.length}</div>
                 </CardHeader>
                 <CardBody className="p-0">
@@ -107,15 +109,16 @@ const ReviewPending = ({ queries }) => {
             </Card>
 
             {/* Pass modal state and data to the DailyStatusModal */}
-            <DailyStatusModal
+            <ApprovalPendingModal
                 modalOpen={modalOpen}
                 modalData={selectedRow} // Pass selected row data to modal
                 selectedRow={selectedRow} // Also pass for form submission
                 onClose={() => { setModalOpen(false); window.location.reload(); }}
- // Close modal
+            // Close modal
             />
         </Col>
     );
 };
 
-export default ReviewPending;
+export default ApprovalPending;
+

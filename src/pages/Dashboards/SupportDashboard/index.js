@@ -23,6 +23,7 @@ import DeadLineCrossed from "./DeadLineCrossed.js";
 import CriticalQueries from "./CriticalQueries.js";
 import ReviewPending from "./ReviewPending.js";
 import ClientWise from "./ClientWise.js";
+import ApprovalPending from "./ReviewManager.js";
 
 const SupportDashboard = () => {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const SupportDashboard = () => {
   const loading = useSelector((state) => state.SupportDashboard.loading);
   const success = useSelector((state) => state.SupportDashboard.success);
   const navigate = useNavigate();
-
+console.log(data);
   const today = new Date();
   const storedRange = JSON.parse(sessionStorage.getItem("selectedRange"));
   const [selectedRange, setSelectedRange] = useState([null, null]);
@@ -122,6 +123,11 @@ const SupportDashboard = () => {
                 </Col>
                 <Col xs="12" md="4">
                   <ReviewPending queries={Currdata ||[]}/>
+                </Col>
+              </Row>
+              <Row>
+                <Col xs="12" md="4">
+                  <ApprovalPending queries={Currdata||[]}/>
                 </Col>
               </Row>
               <ClientWise queries={Currdata ||[]} />

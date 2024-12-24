@@ -32,6 +32,7 @@ export const POST_DailyStatus = createAsyncThunk(
             payload.SupportStatus=body.CurrentStatus;
             payload.Remarks=body.solutionDetails;
             payload.DueDate=body.DueDate;
+            payload.ShareStatus=body.ShareStatus
             console.log("pay ",payload);
 
             const response = await Daily_Post_Status(payload);

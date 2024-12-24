@@ -12,7 +12,7 @@ import { useLocation } from "react-router-dom";
 import BreadCrumb from "../../../../Components/Common/BreadCrumb";
 import TicketDetailsCard from "../../../../Components/Common/TicketDetailsCard.js";
 import moment from "moment";
-import CPVoucherNumAttachmentsCard from "../../../../Components/Common/CPVoucherNumAttachmentsCard.js";
+// import CPVoucherNumAttachmentsCard from "../../../../Components/Common/CPVoucherNumAttachmentsCard.js";
 import TicketRatingsCard from "../../../../Components/Common/TicketRatingsCard.js";
 import CPStepsTracking from "../../../../Components/Common/CPStepsTracking.js";
 import DailyStatusModal from "../DailyStatusModal.js";
@@ -21,6 +21,7 @@ import { POST_Rating } from "../../../../slices/Dashboards/TicketDetails/Rating/
 import { useSelector, useDispatch } from "react-redux";
 import RaiseTicketModal from "../raiseticket/RaiseTicketModal.js";
 import { GET_DailyStatusDetails } from "../../../../slices/thunks.js";
+import CPVoucherNumCameraCaptures from "../../../../Components/CPComponents/CPVouchers/CPVoucherNumCameraCaptures.js";
 
 const TicketDetails = () => {
   const location = useLocation();
@@ -30,15 +31,23 @@ const TicketDetails = () => {
 
   // Extract query parameters from the URL
   const query = JSON.parse(localStorage.getItem('query'));
+  
+
+  //ticket ID
+  const url = window.location.href;
+  const queryParams = new URL(url).searchParams;
+  const queryID = queryParams.get("QueryID");
+
+
   console.log(JSON.stringify(query));
   const SupportID = query?.SupportID;
-  const data2 = useSelector((state) => state.TicketDetail.data) || [];
+  const data = useSelector((state) => state.TicketDetail.data) || [];
   const loading = useSelector((state) => state.TicketDetail.loading);
   const error = useSelector((state) => state.TicketDetail.error);
   const success = useSelector((state) => state.TicketDetail.success);
   const [modal, setModal] = useState(false);
   const [modelOpen, setModalOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(query);
+  const [selectedRow, setSelectedRow] = useState(data);
   const [modalData, setModalData] = useState(null);
   const DailyStatusData = useSelector((state) => state.DailyStatus.data);
   const SupportStatusData = useSelector((state) => state.SupportStatuses.data);
@@ -50,12 +59,19 @@ const TicketDetails = () => {
   console.log("Rating " + JSON.stringify(ratingData));
   const [IDdailyStatus,setIDdailyStatus]=useState([]);
   const [ticketData,setTicketData]=useState([]);
+
+  useEffect(()=>{
+    dispatch(GET_TicketDetails(queryID));
+  },[dispatch])
   useEffect(() => {
-    dispatch(GET_TicketDetails(SupportID));
-    setTicketData(data2)
+    dispatch(GET_TicketDetails(queryID));
+    setTicketData(data)
   }, [dispatch,SupportID]);
   useEffect(() => {
-    if (SupportID) {
+    if (queryID) {
+      dispatch(GET_DailyStatusDetails(queryID));
+    }
+    else if(SupportID){
       dispatch(GET_DailyStatusDetails(SupportID));
     }
   }, [SupportID, dispatch]);
@@ -78,7 +94,7 @@ const TicketDetails = () => {
 
 
 
-  console.log(data2);
+  console.log(data);
   const openModal = (dailyID) => {
     if (dailyID) {
       console.log("DailyID clicked:", dailyID);
@@ -93,46 +109,46 @@ const TicketDetails = () => {
     }
   };
   const ticketDetails = {
-    Subject: data2.QuerySubject,
-    Description: data2.QueryDescription,
-    Module: `${data2.Module} → ${data2.SubModule}`,
-    Menu: data2.Menu,
+    Subject: data.QuerySubject,
+    Description: data.QueryDescription,
+    Module: `${data.Module} → ${data.SubModule}`,
+    Menu: data.Menu,
   };
 
   const userDetails = {
-    "Contact Person": data2[0]?.TicketUser,
-    Mobile: data2[0]?.TicketUserMobile,
-    Email: data2[0]?.TicketUserEmail,
+    "Contact Person": data[0]?.TicketUser,
+    Mobile: data[0]?.TicketUserMobile,
+    Email: data[0]?.TicketUserEmail,
   };
   const clientDetails = {
-    "Licensed To": data2[0]?.LicensedTo,
-    "Client Code": data2[0]?.ClientCode,
+    "Licensed To": data[0]?.LicensedTo,
+    "Client Code": data[0]?.ClientCode,
   };
   const supportDetails = {
-    Name: data2[0]?.SupportUser,
+    Name: data[0]?.SupportUser,
   };
 
   const statusDetails = {
-    "Reported On": data2[0]?.ReportDateTime
-      ? moment.utc(data2[0]?.ReportDateTime).local().calendar()
+    "Reported On": data[0]?.ReportDateTime
+      ? moment.utc(data[0]?.ReportDateTime).local().calendar()
       : "Not reported",
-    "Current Status": data2[0]?.CurrentStatus || "Not updated",
-    "Today's Status": data2[0]?.TodaysStatus || "Not updated",
-    "Due Date": data2[0]?.DueDate
-      ? moment.utc(data2[0]?.DueDate).local().format("MMMM Do, YYYY")
+    "Current Status": data[0]?.CurrentStatus || "Not updated",
+    "Today's Status": data[0]?.TodaysStatus || "Not updated",
+    "Due Date": data[0]?.DueDate
+      ? moment.utc(data[0]?.DueDate).local().format("MMMM Do, YYYY")
       : "Not specified",
     "Completed On":
-      data2[0]?.CompletedOn === "0001-01-01T00:00:00"
+      data[0]?.CompletedOn === "0001-01-01T00:00:00"
         ? "Not completed"
-        : moment.utc(data2[0]?.CompletedOn).local().calendar(),
+        : moment.utc(data[0]?.CompletedOn).local().calendar(),
   };
 
-  document.title = `Ticket Details | ${data2[0]?.TicketNumber}`;
+  document.title = `Ticket Details | ${data[0]?.TicketNumber}`;
   const calculateTimeDifference = (reportDateTime, completedOn) => {
     // Check if completedOn is the default invalid time
     if (completedOn === "0001-01-01T00:00:00") {
       return `Time Passed: ${moment
-        .duration(moment().diff(moment.utc(query.ReportDateTime).local()))
+        .duration(moment().diff(moment.utc(data.ReportDateTime).local()))
         .humanize()}`;
     }
 
@@ -160,8 +176,8 @@ const TicketDetails = () => {
     Window.location.reload(true);
   };
   const timeTaken = calculateTimeDifference(
-    data2[0]?.ReportDateTime,
-    data2[0]?.CompletedOn
+    data[0]?.ReportDateTime,
+    data[0]?.CompletedOn
   );
   const [rated, setRated] = useState(false);
   const [rating, setRating] = useState(0);
@@ -193,12 +209,12 @@ const TicketDetails = () => {
     <React.Fragment>
       <div className="page-content">
         <Container fluid>
-          <BreadCrumb title="Ticket Details" pageTitle={data2[0]?.TicketNumber} />
+          <BreadCrumb title="Ticket Details" pageTitle={data[0]?.TicketNumber} />
 
           <Row>
             <Col xl={9}>
               <Card className="ribbon-box border shadow-none right">
-                {data2[0]?.IsCritical && (
+                {data[0]?.IsCritical && (
                   <span className="ribbon-three ribbon-three-danger">
                     <span>Critical</span>
                   </span>
@@ -218,31 +234,46 @@ const TicketDetails = () => {
                   </div>
                   <div
                     style={{
-                      marginRight: data2[0]?.IsCritical ? "100px" : "0", // Shifts the ticket number to the left when critical
+                      marginRight: data[0]?.IsCritical ? "100px" : "0", // Shifts the ticket number to the left when critical
                     }}
                   >
-                    <h6 className="mb-0 text-muted">{data2[0]?.TicketNumber}</h6>
+                    <h6 className="mb-0 text-muted">{data[0]?.TicketNumber}</h6>
                   </div>
                 </CardHeader>
                 <CardBody>
                   <table className="table table-borderless table-sm mb-0 w-100">
                     <tbody>
                       <tr>
-                        <td
+                        <span
                           className="fw-semibold"
-                          style={{ whiteSpace: "nowrap", width: "25%" }}
+                          style={{
+                            whiteSpace: "nowrap",  // Keeps the text on a single line
+                            width: "auto",         // Adjust to content width
+                            paddingRight: "10px",         // Remove any default padding
+                            textAlign: "left",     // Ensure left alignment for both cells
+                          }}
                         >
                           Subject:
-                        </td>
-                        <td className="w-75">{data2[0]?.QuerySubject}</td>
+                        </span>
+                        <span
+                          style={{
+                            padding: "0",          // Remove padding for this cell as well
+                            textAlign: "left",     // Left-align the text for consistency
+                          }}
+                        >
+                          {data[0]?.QuerySubject}
+                        </span>
                       </tr>
+
+
                       <tr>
                         <td
                           className="fw-semibold"
-                          style={{ whiteSpace: "nowrap" }}
+                          style={{ whiteSpace: "pre-line" }}
                         >
                           Query Description:
                         </td>
+
                       </tr>
                       <tr>
                         <td colSpan="2">
@@ -258,8 +289,18 @@ const TicketDetails = () => {
                               boxSizing: "border-box", // Prevents overflow by including padding in width calculation
                             }}
                           >
-                            {data2[0]?.QueryDescription}
+                            {data[0]?.QueryDescription ? (
+                              data[0]?.QueryDescription.split("\n").map((line, index) => (
+                                <React.Fragment key={index}>
+                                  {line}
+                                  <br />
+                                </React.Fragment>
+                              ))
+                            ) : (
+                              <p>No description available</p>
+                            )}
                           </div>
+
                         </td>
                       </tr>
                       <tr>
@@ -284,7 +325,7 @@ const TicketDetails = () => {
                               boxSizing: "border-box", // Prevents overflow by including padding in width calculation
                             }}
                           >
-                            {data2[0]?.Solution}
+                            {data[0]?.Solution}
                           </div>
                         </td>
                       </tr>
@@ -346,8 +387,8 @@ const TicketDetails = () => {
                 details={clientDetails}
                 icon="ri-user-3-line"
               />
-              <CPVoucherNumAttachmentsCard />
-              {query.CompletedOn !== "0001-01-01T00:00:00" && (
+              <CPVoucherNumCameraCaptures voucherdata={data[0]?.SupportID}/>
+              {query?.CompletedOn !== "0001-01-01T00:00:00" && (
                 <TicketRatingsCard
                   onSubmitRating={handleRatingSubmit}
                   rated={rated}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container, Card, CardHeader, CardBody, Table ,Input} from "reactstrap";
+import { Row, Col, Container, Card, CardHeader, CardBody, Table ,Input,Accordion,AccordionItem,Collapse} from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import BreadCrumb from "../../../Components/Common/BreadCrumb";
 import DailyStatusModal from "../SupportDashboard/DailyStatusModal";
@@ -7,6 +7,7 @@ import QueryCard from "../../../Components/CPComponents/CPRegister/CPRegisterDat
 import { useDispatch, useSelector } from "react-redux";
 import { GET_SupportDashboard } from "../../../slices/Dashboards/SupportDashboard/thunk"; // Ensure this import is used correctly
 import CPSupportDataCardSirEdit from "./../../../Components/CPComponents/CPDashboard/Support/CPSupportDataCardSirEdit"
+import classnames from "classnames";
 const QueryRegister = () => {
     // State for filters
     const userType = localStorage.getItem("userType");
@@ -96,6 +97,18 @@ const QueryRegister = () => {
         setSearchQuery(query);
     };
 
+    // Accordian Code
+    // < !--Accordion Flush Example-- >
+
+    const [colA, setcolA] = useState(false);
+    
+
+    const t_colA = () => {
+        setcolA(!colA);
+        
+    };
+
+    
 
     return (
         <React.Fragment>
@@ -104,90 +117,125 @@ const QueryRegister = () => {
                     {/* Breadcrumb */}
                     <BreadCrumb title="Support Register" />
 
+                    {/*Accordian Code */}
+                    
+                    <Accordion id="default-accordion-example" flush>
+                        <AccordionItem className="material-shadow mb-3">
+                            <h2 className="accordion-header" id="headingOne">
+                                <button
+                                    className={classnames("accordion-button", { collapsed: !colA })}
+                                    type="button"
+                                    onClick={t_colA}
+                                    style={{ cursor: "pointer" }}
+                                >
+                                    Advanced Filters and Search
+                                </button>
+                            </h2>
+                            <Collapse isOpen={colA} className="accordion-collapse mt-3" id="collapseOne">
+                                <Table className="border shadow-none w-100">
+                                    <thead>
+                                        <tr>
+                                            <th colSpan="2">
+                                                <Row className="mb-3">
+                                                    <Col md="3">
+                                                        <label>Filter by Current Status:</label>
+                                                        <select
+                                                            className="form-control"
+                                                            value={filterStatus}
+                                                            onChange={handleFilterStatusChange}
+                                                        >
+                                                            <option value="">All Status</option>
+                                                            {uniqueStatuses?.map((status, index) => (
+                                                                <option key={index} value={status}>
+                                                                    {status}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </Col>
+
+                                                    <Col md="3">
+                                                        <label>Filter by Module:</label>
+                                                        <select
+                                                            className="form-control"
+                                                            value={filterModule}
+                                                            onChange={handleFilterModuleChange}
+                                                        >
+                                                            <option value="">All Modules</option>
+                                                            {uniqueModules.map((module, index) => (
+                                                                <option key={index} value={module}>
+                                                                    {module}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </Col>
+
+                                                    {userType === "Support-Portal" && (
+                                                        <Col md="3">
+                                                            <label>Filter by Client:</label>
+                                                            <select
+                                                                className="form-control"
+                                                                value={filterClient}
+                                                                onChange={handleFilterClientChange}
+                                                            >
+                                                                <option value="">All Clients</option>
+                                                                {uniqueClients.map((client, index) => (
+                                                                    <option key={index} value={client}>
+                                                                        {client}
+                                                                    </option>
+                                                                ))}
+                                                            </select>
+                                                        </Col>
+                                                    )}
+
+                                                    <Col md="3">
+                                                        <label>Filter by Today Status:</label>
+                                                        <select
+                                                            className="form-control"
+                                                            value={filterTodayStatus}
+                                                            onChange={handleFilterTodayStatus}
+                                                        >
+                                                            <option value="">All Today Status</option>
+                                                            {uniqueTodayStatus.map((TodayStatus, index) => (
+                                                                <option key={index} value={TodayStatus}>
+                                                                    {TodayStatus}
+                                                                </option>
+                                                            ))}
+                                                        </select>
+                                                    </Col>
+
+                                                    <Col md="3">
+                                                        <label htmlFor="Search">Search By Ticket Number</label>
+                                                        <Input
+                                                            type="text"
+                                                            placeholder="Search by Ticket Number or Subject"
+                                                            value={searchQuery}
+                                                            onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
+                                                        />
+                                                    </Col>
+                                                </Row>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                </Table>
+                            </Collapse>
+                        </AccordionItem>
+                    </Accordion>
+
+
+
+
+
+
+
+
+
+
+
                     {/* Filters */}
                     <Row className="mt-3">
                         <Col xl={18}>
                             <Table className="border shadow-none flex-grow-0" style={{ tableLayout: 'fixed', width: '100%' }}>
-                                <th className="d-flex justify-content-between align-items-center">
-                                    <Row className="mb-3">
-                                        <Col md="3">
-                                            <label>Filter by Current Status:</label>
-                                            <select
-                                                className="form-control"
-                                                value={filterStatus}
-                                                onChange={handleFilterStatusChange}
-                                            >
-                                                <option value="">All Status</option>
-                                                {uniqueStatuses?.map((status, index) => (
-                                                    <option key={index} value={status}>
-                                                        {status}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </Col>
-
-                                        <Col md="3">
-                                            <label>Filter by Module:</label>
-                                            <select
-                                                className="form-control"
-                                                value={filterModule}
-                                                onChange={handleFilterModuleChange}
-                                            >
-                                                <option value="">All Modules</option>
-                                                {uniqueModules.map((module, index) => (
-                                                    <option key={index} value={module}>
-                                                        {module}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </Col>
-                                        {userType === "CPTeam" && (
-                                            <Col md="3">
-                                                <label>Filter by Client:</label>
-                                                <select
-                                                    className="form-control"
-                                                    value={filterClient}
-                                                    onChange={handleFilterClientChange}
-                                                >
-                                                    <option value="">All Clients</option>
-                                                    {uniqueClients.map((client, index) => (
-                                                        <option key={index} value={client}>
-                                                            {client}
-                                                        </option>
-                                                    ))}
-                                                </select>
-                                            </Col>
-
-                                        )}
-                                        <Col md="3">
-                                            <label>Filter by Today Status:</label>
-                                            <select
-                                                className="form-control"
-                                                value={filterTodayStatus}
-                                                onChange={handleFilterTodayStatus}
-                                            >
-                                                <option value="">All Today Status</option>
-                                                {uniqueTodayStatus.map((TodayStatus, index) => (
-                                                    <option key={index} value={TodayStatus}>
-                                                        {TodayStatus}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </Col>
-                                        
-                                        <Col md="3">
-                                            <label htmlFor="Search">Search By Ticket Number</label>
-                                            <Input
-                                                type="text"
-                                                placeholder="Search by Ticket Number or Subject"
-                                                value={searchQuery}
-                                                onChange={(e) => setSearchQuery(e.target.value.toLowerCase())}
-                                            />
-                                        </Col>
-
-                                                    </Row>
-                                    
-                                </th>
+                                
 
                                 <tr>
                                     {loading ? (
