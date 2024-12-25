@@ -31,6 +31,8 @@ export const POST_RaiseTicket = createAsyncThunk(
     }
   }
 );
+
+
 export const PATCH_RaiseTicket = createAsyncThunk(
   "RaiseTicket/patch",
   async (body, thunkAPI) => {
@@ -48,6 +50,8 @@ export const PATCH_RaiseTicket = createAsyncThunk(
     }
   }
 );
+
+
 const applyFilters = (existingData, filterArray) => {
   let result = existingData;
 

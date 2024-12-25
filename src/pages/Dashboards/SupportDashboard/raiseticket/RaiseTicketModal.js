@@ -16,8 +16,8 @@ import {
 } from "reactstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { POST_RaiseTicket,PATCH_RaiseTicket } from "../../../../slices/Dashboards/SupportDashboard/thunk";
-import { GET_ListClient, GET_ListModule,GET_ListClientUser } from "../../../../slices/User/Combo/ModuleCombo/thunk";
+import { POST_RaiseTicket, PATCH_RaiseTicket } from "../../../../slices/Dashboards/SupportDashboard/thunk";
+import { GET_ListClient, GET_ListModule, GET_ListClientUser } from "../../../../slices/User/Combo/ModuleCombo/thunk";
 import { GET_MaxTicketNumber } from "../../../../slices/User/MaxTicketNumber/thunk";
 import { GET_TicketDetails } from "../../../../slices/Dashboards/TicketDetails/thunk";
 import { jelly } from "ldrs";
@@ -28,25 +28,25 @@ const formatLocalDateTime = (date) => {
   return localDate.toISOString().slice(0, 16);
 };
 
-const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
+const RaiseTicketModal = ({ isOpen, toggle, onClose, parent }) => {
   const [clientName, setClientName] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [dropdownOpenSubscriberID, setDropdownOpenSubscriberID]=useState(false);
+  const [dropdownOpenSubscriberID, setDropdownOpenSubscriberID] = useState(false);
   const [dropdownOpenTicketUser, setDropdownOpenTicketUser] = useState(false);
   const [currentMenuID, setCurrentMenuID] = useState("");
   const [searchTerm, setSearchTerm] = useState(""); // State for search functionality
-  const [searchTermSubscriberID, setSearchTermSubscriberID]=useState("");
-  const [searchTermTicketUser,setSearchTermTicketUser]=useState("");
+  const [searchTermSubscriberID, setSearchTermSubscriberID] = useState("");
+  const [searchTermTicketUser, setSearchTermTicketUser] = useState("");
   const dispatch = useDispatch();
   const moduleData = useSelector((state) => state.ListModule.data);
-  const clientData=useSelector((state)=>state.ListClient.data);
-  const clientUserData=useSelector((state)=>state.ListClientUser.data);
+  const clientData = useSelector((state) => state.ListClient.data);
+  const clientUserData = useSelector((state) => state.ListClientUser.data);
   const ticketData = useSelector((state) => state.TicketNumber.data);
   const vendorUser = JSON.parse(localStorage.getItem("vendorUser"));
   const query = JSON.parse(localStorage.getItem('query'));
-  
+
   const SupportID = query?.SupportID;
-  const userType=localStorage.getItem("userType");
+  const userType = localStorage.getItem("userType");
   const data2 = useSelector((state) => state.TicketDetail.data) || [];
   const loading = useSelector((state) => state.TicketDetail.loading);
   const error = useSelector((state) => state.TicketDetail.error);
@@ -58,7 +58,7 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
     dispatch(GET_MaxTicketNumber());
     // dispatch(GET_LiscenseSub)
   }, [dispatch]);
-  if(parent=="TicketDetails"){
+  if (parent == "TicketDetails") {
     useEffect(() => {
       dispatch(GET_TicketDetails(SupportID));
     }, [SupportID]);
@@ -82,15 +82,15 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
 
         const firstSubscriberID = clientData?.find(client => client.Code === clientCodeToFind)?.ClientID || null;
         const firstSubscriberName = clientData?.find(client => client.Code === clientCodeToFind)?.ClientName || null;
-        formik.setFieldValue('subscriberDisplayName',firstSubscriberName);
-        formik.setFieldValue('subscriberID',firstSubscriberID);
-        const clientUserToFind=data2[0]?.TicketUser;
+        formik.setFieldValue('subscriberDisplayName', firstSubscriberName);
+        formik.setFieldValue('subscriberID', firstSubscriberID);
+        const clientUserToFind = data2[0]?.TicketUser;
         dispatch(GET_ListClientUser(firstSubscriberID));
         const firstTicketUserID = clientUserData?.find(client => client.SubUserName === clientUserToFind)?.SubUserID || null;
         const firstTicketUserName = clientUserData?.find(client => client.SubUserName === clientUserToFind)?.SubUserName || null;
         console.log(firstTicketUserName);
-        formik.setFieldValue('ticketUser',firstTicketUserID);
-        formik.setFieldValue('ticketUserDisplayName',firstTicketUserName);
+        formik.setFieldValue('ticketUser', firstTicketUserID);
+        formik.setFieldValue('ticketUserDisplayName', firstTicketUserName);
         // Set the first menu if found
         const firstMenu = filteredData && filteredData.length > 0 ? filteredData[0] : null;
         formik.setFieldValue('Menu', "" || firstMenu?.Code);
@@ -110,20 +110,20 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
           formik.setFieldValue('ticketUser', firstTicketUser?.SubUserID || "");
           formik.setFieldValue('subscriberID', firstSubscriberID?.ClientID || "");
         }
-      
+
 
         // Set initial value with Code
       }
     }, [data2]);
   }
-  
+
   useEffect(() => {
     const storedClientName = vendorUser.subscriberName;
     setClientName(
       storedClientName || `${vendorUser.subscriberCode} - ${vendorUser.subscriberName}`
     );
   }, [vendorUser]);
-  
+
   const formik = useFormik({
     initialValues: {
       Menu: "",
@@ -198,15 +198,15 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
     },
   });
 
-  if(userType==="Support-Portal"){
+  if (userType === "Support-Portal") {
     useEffect(() => {
       if (formik.values.subscriberID) {
         dispatch(GET_ListClientUser(formik.values.subscriberID));
       }
     }, [formik.values.subscriberID, dispatch]);
   }
- 
-  
+
+
   const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
   const toggleDropdownSubscriberID = () => setDropdownOpenSubscriberID((prevState) => !prevState);
   const toggleDropdownTicketUser = () => setDropdownOpenTicketUser((prevState) => !prevState);
@@ -214,15 +214,15 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value?.toLowerCase());
   };
-  const handleSearchSubscriberID=(e)=>{
+  const handleSearchSubscriberID = (e) => {
     setSearchTermSubscriberID(e.target.value?.toLowerCase());
   };
-  const handleSearchTicketUser=(e)=>{
+  const handleSearchTicketUser = (e) => {
     setSearchTermTicketUser(e.target.value?.toLowerCase());
   };
-  
-  
-  
+
+
+
   const filteredTicketUser = clientUserData?.filter((user) =>
     user.SubUserName?.toLowerCase().includes(searchTermTicketUser)
   );
@@ -263,12 +263,12 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
     name: vendorUser.subUserName,
     mobile: localStorage.getItem("mobileNumber"),
     email: localStorage.getItem("userName"),
-    ticketNo: (parent === "Dashboard") ? ticketData:data2[0]?.TicketNumber,
+    ticketNo: (parent === "Dashboard") ? ticketData : data2[0]?.TicketNumber,
     clientName: clientName,
     dateTime: formatLocalDateTime(new Date()),
   };
-  
-  
+
+
   return (
     <Modal isOpen={isOpen} toggle={toggle} size="lg" style={modalStyles}>
       <ModalHeader toggle={toggle} style={{ fontSize: "14px", padding: "10px" }}>
@@ -346,24 +346,24 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
               </div>
 
               {/* Client Name */}
-              
-                <div>
-                  <span>{dummyData.clientName}</span>
-                </div>
-              
+
+              <div>
+                <span>{dummyData.clientName}</span>
+              </div>
+
 
             </Col>
           </Row>
 
           <hr />
 
-          
-          
+
+
 
           {/* Subscriber ID Dropdown */}
           {(userType === "Support-Portal") ? <Row style={rowStyles}>
             <Col lg={12}>
-              
+
 
               <CPDropDownBox
                 labelTitle="Select Subscriber"
@@ -406,12 +406,12 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
                 </div>
               ) : null}
             </Col>
-          </Row>:(<></>)}
+          </Row> : (<></>)}
 
           {/* Ticket User Dropdown */}
           {(userType === "Support-Portal") ? (<Row style={rowStyles}>
             <Col lg={12}>
-              
+
 
               <CPDropDownBox
                 labelTitle="Select Ticket User"
@@ -447,7 +447,7 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
                 </div>
               ) : null}
             </Col>
-          </Row>):(<></>)}
+          </Row>) : (<></>)}
           {/* Menu & Is Critical */}
           <Row style={rowStyles}>
             <Col lg={12}>
@@ -516,29 +516,37 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
                   </div>
                   {/* Filtered Dropdown Items */}
                   {filteredData?.length > 0 ? (
-                    filteredData?.map((menu) => (
-                      <DropdownItem
-                        key={menu.MenuID}
-                        onClick={() => {
-                          setCurrentMenuID(menu.MenuID);
-                          formik.setFieldValue("Menu", menu.Code);
-                        }}
-                        style={{
-                          padding: "12px",
-                          fontSize: "14px",
-                          whiteSpace: "normal",
-                          lineHeight: "1.4",
-                          cursor: "pointer",
-                          transition: "background-color 0.2s ease",
-                        }}
-                        className="dropdown-item"
-                      >
-                        <div style={{ fontWeight: "600", color: "#333" }}>{menu.MenuName}</div>
-                        <div style={{ fontSize: "12px", color: "#888" }}>
-                          {menu.Module} → {menu.MenuType}
-                        </div>
-                      </DropdownItem>
-                    ))
+                    <div
+                      style={{
+                        maxHeight: "300px", // Increased the height to fit more options
+                        overflowY: "auto", // Enable vertical scrolling
+                        overflowX: "hidden", // Disable horizontal scrolling
+                      }}
+                    >
+                      {filteredData?.map((menu) => (
+                        <DropdownItem
+                          key={menu.MenuID}
+                          onClick={() => {
+                            setCurrentMenuID(menu.MenuID);
+                            formik.setFieldValue("Menu", menu.Code);
+                          }}
+                          style={{
+                            padding: "12px",
+                            fontSize: "14px",
+                            whiteSpace: "normal",
+                            lineHeight: "1.4",
+                            cursor: "pointer",
+                            transition: "background-color 0.2s ease",
+                          }}
+                          className="dropdown-item"
+                        >
+                          <div style={{ fontWeight: "600", color: "#333" }}>{menu.MenuName}</div>
+                          <div style={{ fontSize: "12px", color: "#888" }}>
+                            {menu.Module} → {menu.MenuType}
+                          </div>
+                        </DropdownItem>
+                      ))}
+                    </div>
                   ) : (
                     <div
                       style={{
@@ -551,6 +559,7 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
                       No results found
                     </div>
                   )}
+
                 </DropdownMenu>
               </Dropdown>
 
@@ -575,11 +584,10 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
                 type="text"
                 id="QuerySubject"
                 style={formControlSm}
-                className={`form-control ${
-                  formik.touched.QuerySubject && formik.errors.QuerySubject
-                    ? "is-invalid"
-                    : ""
-                }`}
+                className={`form-control ${formik.touched.QuerySubject && formik.errors.QuerySubject
+                  ? "is-invalid"
+                  : ""
+                  }`}
                 {...formik.getFieldProps("QuerySubject")}
               />
               {formik.touched.QuerySubject && formik.errors.QuerySubject ? (
@@ -599,16 +607,15 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose,parent }) => {
               <textarea
                 id="QueryDescription"
                 style={{ ...formControlSm, height: "60px" }}
-                className={`form-control ${
-                  formik.touched.QueryDescription &&
+                className={`form-control ${formik.touched.QueryDescription &&
                   formik.errors.QueryDescription
-                    ? "is-invalid"
-                    : ""
-                }`}
+                  ? "is-invalid"
+                  : ""
+                  }`}
                 {...formik.getFieldProps("QueryDescription")}
               />
               {formik.touched.QueryDescription &&
-              formik.errors.QueryDescription ? (
+                formik.errors.QueryDescription ? (
                 <div className="invalid-feedback">
                   {formik.errors.QueryDescription}
                 </div>

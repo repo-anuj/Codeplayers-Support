@@ -12,7 +12,6 @@ export const POST_LicenseValidation  = createAsyncThunk('licenseValidation/post'
         {
           localStorage.setItem("authUser", JSON.stringify(data));
           localStorage.setItem("email", user.email);
-          localStorage.setItem("password", user.password);
           return data;
         } else {
           return  thunkAPI.rejectWithValue("Invalid Subscriber ID")

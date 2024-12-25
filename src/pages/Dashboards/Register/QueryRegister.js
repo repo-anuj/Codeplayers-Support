@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, Container, Card, CardHeader, CardBody, Table ,Input,Accordion,AccordionItem,Collapse} from "reactstrap";
+import { Row, Col, Container, Card, CardHeader, CardBody, Table, Input, Accordion, AccordionItem, Collapse } from "reactstrap";
 import { useNavigate } from "react-router-dom";
 import BreadCrumb from "../../../Components/Common/BreadCrumb";
 import DailyStatusModal from "../SupportDashboard/DailyStatusModal";
@@ -14,7 +14,7 @@ const QueryRegister = () => {
     const [filterStatus, setFilterStatus] = useState(""); // For filtering by CurrentStatus
     const [filterModule, setFilterModule] = useState(""); // For filtering by Module
     const [filterClient, setFilterClient] = useState(""); // For filtering by Client
-    const [filterTodayStatus,SetFilterTodayStatus]=useState("");
+    const [filterTodayStatus, SetFilterTodayStatus] = useState("");
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
     const [modalData, setModalData] = useState(null);
@@ -32,7 +32,7 @@ const QueryRegister = () => {
             setModalData(dailyID); // Set state for the modal
             setModalOpen(!modalOpen); // Open the modal
         } else {
-            
+
             setModalOpen(!modalOpen);
             setModalData(null);
             setSelectedRow(Row);
@@ -41,7 +41,7 @@ const QueryRegister = () => {
         dispatch(GET_SupportDashboard());
     };
     const handleCloseModal = () => {
-        setModalOpen(!modalOpen); 
+        setModalOpen(!modalOpen);
         dispatch(GET_SupportDashboard());// Close the modal
         // Refresh the page
     };
@@ -73,7 +73,7 @@ const QueryRegister = () => {
     const uniqueClients = [...new Set(queriesData?.map((query) => query?.LicensedTo))];
     const uniqueTodayStatus = [...new Set(queriesData?.map((query) => query?.TodaysStatus))];
     // Filter the data based on selected filters
-    
+
     const [filteredData, setFilteredData] = useState([]);
 
     useEffect(() => {
@@ -101,14 +101,9 @@ const QueryRegister = () => {
     // < !--Accordion Flush Example-- >
 
     const [colA, setcolA] = useState(false);
-    
-
     const t_colA = () => {
         setcolA(!colA);
-        
     };
-
-    
 
     return (
         <React.Fragment>
@@ -118,7 +113,7 @@ const QueryRegister = () => {
                     <BreadCrumb title="Support Register" />
 
                     {/*Accordian Code */}
-                    
+
                     <Accordion id="default-accordion-example" flush>
                         <AccordionItem className="material-shadow mb-3">
                             <h2 className="accordion-header" id="headingOne">
@@ -152,7 +147,6 @@ const QueryRegister = () => {
                                                             ))}
                                                         </select>
                                                     </Col>
-
                                                     <Col md="3">
                                                         <label>Filter by Module:</label>
                                                         <select
@@ -168,7 +162,6 @@ const QueryRegister = () => {
                                                             ))}
                                                         </select>
                                                     </Col>
-
                                                     {userType === "Support-Portal" && (
                                                         <Col md="3">
                                                             <label>Filter by Client:</label>
@@ -186,7 +179,6 @@ const QueryRegister = () => {
                                                             </select>
                                                         </Col>
                                                     )}
-
                                                     <Col md="3">
                                                         <label>Filter by Today Status:</label>
                                                         <select
@@ -221,37 +213,16 @@ const QueryRegister = () => {
                         </AccordionItem>
                     </Accordion>
 
-
-
-
-
-
-
-
-
-
-
                     {/* Filters */}
                     <Row className="mt-3">
                         <Col xl={18}>
                             <Table className="border shadow-none flex-grow-0" style={{ tableLayout: 'fixed', width: '100%' }}>
-                                
-
                                 <tr>
                                     {loading ? (
                                         <p>Loading queries...</p>
                                     ) : filteredData?.length > 0 ? (
-                                        <div
-                                            
-                                        >
-                                                
-                                                    
-                                                        <QueryCard data={filteredData} onButtonClick={handleButtonClick} query={searchQuery} />
-                                                        
-                                                    
-                                                
-                                            
-                                            
+                                        <div>
+                                            <QueryCard data={filteredData} onButtonClick={handleButtonClick} query={searchQuery} />
                                         </div>
                                     ) : (
                                         <p>No queries found for the selected filters.</p>

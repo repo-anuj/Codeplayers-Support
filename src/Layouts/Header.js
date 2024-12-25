@@ -123,7 +123,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
             </div>
 
             <div className="d-flex align-items-center">
-              <Dropdown
+              {/* <Dropdown
                 isOpen={search}
                 toggle={toogleSearch}
                 className="d-md-none topbar-head-dropdown header-item"
@@ -152,7 +152,7 @@ const Header = ({ onChangeLayoutMode, layoutModeType, headerClass }) => {
                     </div>
                   </Form>
                 </DropdownMenu>
-              </Dropdown>
+              </Dropdown> */}
 
               {/* LanguageDropdown */}
               {/* <LanguageDropdown /> */}

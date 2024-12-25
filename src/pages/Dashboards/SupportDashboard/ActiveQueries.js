@@ -63,6 +63,16 @@ const ActiveQueries = ({ queries }) => {
   const [selectedLevel, setSelectedLevel] = useState(0); // Tracks current level
   const [selectedData, setSelectedData] = useState(null); // Tracks data at each level
 
+  // Mapping for short forms
+  const NAME_SHORTFORM_MAP = {
+    "Review Pending": "SRP",
+    "Approval Pending": "Approval",
+    "Development Review Pending": "DRP",
+  };
+
+  // Helper function to get the short form
+  const getShortForm = (name) => NAME_SHORTFORM_MAP[name] || name;
+
   // Process Level 1 (group by CurrentStatus)
   const statusGroups = groupBy(queries, "CurrentStatus");
   const dataLevel1 = Object.entries(statusGroups).map(([status, items]) => ({
@@ -75,19 +85,19 @@ const ActiveQueries = ({ queries }) => {
   const dataLevel2 =
     selectedData && selectedLevel === 1
       ? Object.entries(selectedData.subData).map(([clientCode, items]) => ({
-        name: clientCode,
-        value: items.length,
-        subData: groupBy(items, "Module"), // Prepare subData for Level 3
-      }))
+          name: clientCode,
+          value: items.length,
+          subData: groupBy(items, "Module"), // Prepare subData for Level 3
+        }))
       : [];
 
   // Process Level 3 (group by Module)
   const dataLevel3 =
     selectedData && selectedLevel === 2
       ? Object.entries(selectedData.subData).map(([module, items]) => ({
-        name: module,
-        value: items.length,
-      }))
+          name: module,
+          value: items.length,
+        }))
       : [];
 
   const handleClick = (data, index) => {
@@ -113,8 +123,8 @@ const ActiveQueries = ({ queries }) => {
     selectedLevel === 0
       ? dataLevel1
       : selectedLevel === 1
-        ? dataLevel2
-        : dataLevel3;
+      ? dataLevel2
+      : dataLevel3;
 
   return (
     <Col xxl={12}>
@@ -136,7 +146,9 @@ const ActiveQueries = ({ queries }) => {
                   outerRadius={110}
                   innerRadius={selectedLevel > 0 ? 70 : 0}
                   onClick={handleClick}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
+                  label={({ name, percent }) =>
+                    `${getShortForm(name)}: ${(percent * 100).toFixed(0)}%`
+                  } // Use short form in the label
                 >
                   {chartData.map((entry, index) => (
                     <Cell
@@ -180,3 +192,5 @@ const ActiveQueries = ({ queries }) => {
 };
 
 export default ActiveQueries;
+
+

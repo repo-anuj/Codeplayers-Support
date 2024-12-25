@@ -53,8 +53,7 @@ const QueryCard = ({ data, onButtonClick ,query}) => {
                             <Card className="mb-0">
                                 <CardHeader
                                     onClick={() => {
-                                        localStorage.setItem("query", JSON.stringify(query));
-                                        navigate(`Support/TrackQuery?QueryID=${query.queryID}`);
+                                        navigate(`Support/TrackQuery?QueryID=${query.SupportID}`);
                                         setSelectedRow(query);
                                     }}
                                 >
