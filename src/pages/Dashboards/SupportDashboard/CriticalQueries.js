@@ -10,17 +10,7 @@ const CriticalQueries = ({ queries }) => {
     const navigate = useNavigate();
 
     // Check if queries is null, undefined, or empty
-    if (!queries || queries.length === 0) {
-        return (
-            <Col xxl={12}>
-                <Card className="card-height-100">
-                    <CardBody className="d-flex justify-content-center align-items-center" style={{ height: "435px" }}>
-                        <p className="text-muted">No recent queries available.</p>
-                    </CardBody>
-                </Card>
-            </Col>
-        );
-    }
+    
 
     const criticalQueries = queries.filter((query) => query.IsCritical);
 
@@ -46,7 +36,7 @@ const CriticalQueries = ({ queries }) => {
                                 alt="No Data Available"
                                 style={{ height: "auto", width: "20%" }}
                             />
-                            <p className="text-muted mt-3">No recent queries available.</p>
+                            <p className="text-muted mt-3">No Critical queries available.</p>
                         </div>
                     ) : (
                         <SimpleBar style={{ height: "435px" }}>

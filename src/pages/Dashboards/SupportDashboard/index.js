@@ -119,7 +119,7 @@ const SupportDashboard = () => {
                   <ActiveQueries queries={Currdata || []} />
                 </Col>
                 <Col xs="12" md="4">
-                {Currdata && <CurrentlyActiveQueries queries={Currdata || []} />}
+                 <CurrentlyActiveQueries queries={Currdata || []} />
                   
                 </Col>
                 <Col xs="12" md="4">

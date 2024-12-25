@@ -3,7 +3,7 @@ import ModuleCharts from "./ModuleCharts";
 import { Card, CardBody, CardHeader, Row, Col } from "reactstrap";
 import IconsForVoucherType from "../../../Components/CPComponents/CPIcons/IconsForVoucherType";
 import SimpleBar from "simplebar-react";
-
+import Not_Available from "../../../assets/Not_Available.png"; // Corrected typo in "Not_Available"
 const ModuleWiseDistribution = ({ data }) => {
     const [chartData, setChartData] = useState([]);
     const [moduleLabels, setModuleLabels] = useState([]);
@@ -75,7 +75,16 @@ const ModuleWiseDistribution = ({ data }) => {
                             overflowX: "hidden", // Prevent horizontal scrolling
                             padding: "0", // Remove padding from CardBody
                         }}
-                    ><SimpleBar style={{ height: "100%", overflowX: "hidden" }}>
+                    >{data.length === 0 ? (
+                        <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "435px" }}>
+                            <img
+                                src={Not_Available}
+                                alt="No Data Available"
+                                style={{ height: "auto", width: "20%" }}
+                            />
+                            <p className="text-muted mt-3">No Queries.</p>
+                        </div>
+                    ) : (<SimpleBar style={{ height: "100%", overflowX: "hidden" }}>
                         {/* Displaying the doughnut chart */}
                         <ModuleCharts
                             series={chartData}
@@ -136,7 +145,7 @@ const ModuleWiseDistribution = ({ data }) => {
                                     </div>
                                 ))}
                             </div>
-                        </SimpleBar>
+                        </SimpleBar>)}
                     </CardBody>
                 </Card>
             </Col>

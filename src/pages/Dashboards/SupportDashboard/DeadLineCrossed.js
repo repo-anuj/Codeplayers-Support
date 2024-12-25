@@ -10,26 +10,7 @@ const DeadLineCrossed = ({ queries }) => {
     const navigate = useNavigate();
 
     // Check if queries is null, undefined, or empty
-    if (!queries || queries.length === 0) {
-        return (
-            <Col xxl={12}>
-                <Card className="card-height-100">
-                    <CardHeader className="card-header align-items-center d-flex">
-                        {IconsForVoucherType("Dead Line Crossed")}
-                        <h4 className="card-title mb-0 flex-grow-1">Dead Line Crossed</h4>
-                    </CardHeader>
-                    <CardBody className="text-center">
-                        <img
-                            src={Not_Available}
-                            alt="No Data Available"
-                            style={{ maxWidth: "100%", height: "auto" }}
-                        />
-                        <p className="text-muted mt-3">No recent queries available.</p>
-                    </CardBody>
-                </Card>
-            </Col>
-        );
-    }
+    
 
     // Filter queries where the deadline is crossed
     const filteredQueries = queries.filter(
@@ -60,7 +41,7 @@ const DeadLineCrossed = ({ queries }) => {
                                 alt="No Data Available"
                                 style={{ height: "auto", width: "20%" }}
                             />
-                            <p className="text-muted mt-3">No recent queries available.</p>
+                            <p className="text-muted mt-3">No Dead Line Crossed.</p>
                         </div>
                     ) : (
                         <SimpleBar style={{ height: "435px" }}>

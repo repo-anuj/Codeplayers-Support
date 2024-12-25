@@ -5,6 +5,7 @@ import IconsForVoucherType from "../../../Components/CPComponents/CPIcons/IconsF
 import SimpleBar from "simplebar-react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
+import Not_Available from "../../../assets/Not_Available.png"; // Import the Not_Available image
 
 const ReviewPending = ({ queries }) => {
     const navigate = useNavigate();
@@ -14,7 +15,6 @@ const ReviewPending = ({ queries }) => {
 
     // Utility: Render query status
     const renderQueryStatus = (query) => {
-        // Exclude queries based on the new conditions
         if (!query.IsApproved) return false; // Exclude if IsApproved is false
         if (query.CurrentStatus === "Review Pending") return false; // Exclude if CurrentStatus is "Review Pending"
         if (query.CurrentStatus === "Done") return false; // Exclude if CurrentStatus is "Done"
@@ -24,7 +24,6 @@ const ReviewPending = ({ queries }) => {
 
     // Filter queries based on the updated logic
     const filteredQueries = queries?.filter(renderQueryStatus) || [];
-
 
     // Handle card click: Navigate to ticket details page
     const handleCardClick = (queryData) => {
@@ -56,23 +55,18 @@ const ReviewPending = ({ queries }) => {
                     <h6 className="fs-14 mb-1">{query.Module || "N/A"}</h6>
                     <Row>
                         <span className="text-muted fs-12 mb-0">
-                            <i className="mdi mdi-circle-medium text-success fs-15 me-1"></i>
                             Date: {formatDate(query.ReportDateTime)}
                         </span>
                         <span className="text-muted fs-12 mb-0">
-                            <i className="mdi mdi-circle-medium text-success fs-15 me-1"></i>
                             User: {query.TicketUser}
                         </span>
                         <span className="text-muted fs-12 mb-0">
-                            <i className="mdi mdi-circle-medium text-success fs-15 me-1"></i>
                             Subject: {query.QuerySubject}
                         </span>
                         <span className="text-muted fs-12 mb-0">
-                            <i className="mdi mdi-circle-medium text-success fs-15 me-1"></i>
                             Support User: {query.SupportUser}
                         </span>
                         <span className="text-muted fs-12 mb-0">
-                            <i className="mdi mdi-circle-medium text-success fs-15 me-1"></i>
                             Status: {query.Status}
                         </span>
                     </Row>
@@ -80,10 +74,6 @@ const ReviewPending = ({ queries }) => {
             </div>
         </div>
     );
-
-    if (filteredQueries.length === 0) {
-        return <p className="text-muted">No Currently Active queries available.</p>;
-    }
 
     return (
         <Col xxl={12}>
@@ -94,11 +84,22 @@ const ReviewPending = ({ queries }) => {
                     <div className="fs-16 fw-bold">{filteredQueries.length}</div>
                 </CardHeader>
                 <CardBody className="p-0">
-                    <SimpleBar style={{ height: "435px" }}>
-                        <div className="p-0">
-                            {filteredQueries.map(renderQueryItem)}
+                    {filteredQueries.length === 0 ? (
+                        <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "435px" }}>
+                            <img
+                                src={Not_Available}
+                                alt="No Data Available"
+                                style={{ height: "auto", width: "20%" }}
+                            />
+                            <p className="text-muted mt-3">No Current Active queries available.</p>
                         </div>
-                    </SimpleBar>
+                    ) : (
+                        <SimpleBar style={{ height: "435px" }}>
+                            <div className="p-0">
+                                {filteredQueries.map(renderQueryItem)}
+                            </div>
+                        </SimpleBar>
+                    )}
                 </CardBody>
             </Card>
         </Col>

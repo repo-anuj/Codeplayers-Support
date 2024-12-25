@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Col, Card, CardBody, CardHeader } from "reactstrap";
 import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
 import IconsForVoucherType from "../../../Components/CPComponents/CPIcons/IconsForVoucherType";
+import Not_Available from "../../../assets/Not_Available.png"; // Import Not_Available image
 
 // Extended Colors for Chart
 const COLORS = [
@@ -66,8 +67,8 @@ const ActiveQueries = ({ queries }) => {
   // Mapping for short forms
   const NAME_SHORTFORM_MAP = {
     "Review Pending": "RP",
-    "Client Review Pending":"CRP",
-    "Support Review Pending":"SRP",
+    "Client Review Pending": "CRP",
+    "Support Review Pending": "SRP",
     "Approval Pending": "AP",
     "Development Review Pending": "DRP",
   };
@@ -128,6 +129,8 @@ const ActiveQueries = ({ queries }) => {
       ? dataLevel2
       : dataLevel3;
 
+  const noDataAvailable = chartData.length === 0;
+
   return (
     <Col xxl={12}>
       <Card className="card-height-100" style={{ height: "487px" }}>
@@ -137,38 +140,49 @@ const ActiveQueries = ({ queries }) => {
         </CardHeader>
         <CardBody className="p-0 d-flex flex-column justify-content-center align-items-center">
           <div style={{ textAlign: "center", width: "100%", maxWidth: "500px" }}>
-            <ResponsiveContainer width="100%" height={350}>
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={110}
-                  innerRadius={selectedLevel > 0 ? 70 : 0}
-                  onClick={handleClick}
-                  label={({ name, percent }) =>
-                    `${getShortForm(name)}: ${(percent * 100).toFixed(0)}%`
-                  } // Use short form in the label
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-                {/* Custom Legend to show name and count */}
-                <Legend
-                  content={<CustomLegend />}
-                  layout="horizontal"
-                  align="center"
-                  verticalAlign="bottom"
-                />
-              </PieChart>
-            </ResponsiveContainer>
+          {queries.length === 0 ? (
+                        <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "435px" }}>
+                            <img
+                                src={Not_Available}
+                                alt="No Data Available"
+                                style={{ height: "auto", width: "20%" }}
+                            />
+                            <p className="text-muted mt-3">No Active Queries Available.</p>
+                        </div>
+                    ) : (
+              <ResponsiveContainer width="100%" height={350}>
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={110}
+                    innerRadius={selectedLevel > 0 ? 70 : 0}
+                    onClick={handleClick}
+                    label={({ name, percent }) =>
+                      `${getShortForm(name)}: ${(percent * 100).toFixed(0)}%`
+                    } // Use short form in the label
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  {/* Custom Legend to show name and count */}
+                  <Legend
+                    content={<CustomLegend />}
+                    layout="horizontal"
+                    align="center"
+                    verticalAlign="bottom"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
 
             {selectedLevel > 0 && (
               <button
@@ -194,5 +208,3 @@ const ActiveQueries = ({ queries }) => {
 };
 
 export default ActiveQueries;
-
-
