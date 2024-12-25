@@ -46,7 +46,7 @@ const DeadLineCrossed = ({ queries }) => {
     return (
         <Col xxl={12}>
             <Card className="card-height-100">
-                <CardHeader className="card-header align-items-center d-flex">
+                <CardHeader className="card-header align-items-center d-flex border-bottom border-1">
                     {IconsForVoucherType("Dead Line Crossed")}
                     <h4 className="card-title mb-0 flex-grow-1">Dead Line Crossed</h4>
                     {/* Count of Deadline Crossed */}

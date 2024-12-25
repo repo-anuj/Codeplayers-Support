@@ -88,7 +88,7 @@ const ReviewPending = ({ queries }) => {
     return (
         <Col xxl={12}>
             <Card className="card-height-100">
-                <CardHeader className="card-header align-items-center d-flex">
+                <CardHeader className="card-header align-items-center d-flex border-bottom border-1">
                     {IconsForVoucherType("Currently Active Queries")}
                     <h4 className="card-title mb-0 flex-grow-1">Currently Active Queries</h4>
                     <div className="fs-16 fw-bold">{filteredQueries.length}</div>

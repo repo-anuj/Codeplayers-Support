@@ -47,7 +47,7 @@ const TicketDetails = () => {
   const success = useSelector((state) => state.TicketDetail.success);
   const [modal, setModal] = useState(false);
   const [modelOpen, setModalOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(data);
+  const [selectedRow, setSelectedRow] = useState(data[0]);
   const [modalData, setModalData] = useState(null);
   const DailyStatusData = useSelector((state) => state.DailyStatus.data);
   const SupportStatusData = useSelector((state) => state.SupportStatuses.data);
