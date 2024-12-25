@@ -15,8 +15,9 @@ const ReviewPending = ({ queries }) => {
    
     // Filter queries to exclude those with status "Done"
     const filteredQueries = queries?.filter(
-        (query) => query.CurrentStatus === null
+        (query) => query.IsApproved === true && query.CurrentStatus === "Review Pending"
     ) || [];
+
 
     // Handle card click: Set data to localStorage and navigate to the ticket details page
     const handleCardClick = (queryData) => {

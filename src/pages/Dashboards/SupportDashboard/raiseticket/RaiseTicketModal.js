@@ -31,12 +31,6 @@ const formatLocalDateTime = (date) => {
 const RaiseTicketModal = ({ isOpen, toggle, onClose, parent }) => {
   const [clientName, setClientName] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-<<<<<<< HEAD
-  const [dropdownOpenSubscriberID, setDropdownOpenSubscriberID] = useState(false);
-  const [dropdownOpenTicketUser, setDropdownOpenTicketUser] = useState(false);
-=======
-
->>>>>>> 0980bce64d6858e67feb2ae6e9bfa2139ba97535
   const [currentMenuID, setCurrentMenuID] = useState("");
   const [searchTerm, setSearchTerm] = useState(""); // State for search functionality
   const [searchTermSubscriberID, setSearchTermSubscriberID] = useState("");
@@ -217,16 +211,7 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose, parent }) => {
   const handleSearch = (e) => {
     setSearchTerm(e.target.value?.toLowerCase());
   };
-<<<<<<< HEAD
-  const handleSearchSubscriberID = (e) => {
-    setSearchTermSubscriberID(e.target.value?.toLowerCase());
-  };
-  const handleSearchTicketUser = (e) => {
-    setSearchTermTicketUser(e.target.value?.toLowerCase());
-  };
-=======
  
->>>>>>> 0980bce64d6858e67feb2ae6e9bfa2139ba97535
 
 
 

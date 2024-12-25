@@ -33,7 +33,7 @@ const SupportDashboard = () => {
   const loading = useSelector((state) => state.SupportDashboard.loading);
   const success = useSelector((state) => state.SupportDashboard.success);
   const navigate = useNavigate();
-
+  console.log(data);
   const today = new Date();
   const storedRange = JSON.parse(sessionStorage.getItem("selectedRange"));
   const [selectedRange, setSelectedRange] = useState([null, null]);

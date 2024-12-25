@@ -45,31 +45,6 @@ const QueryCard = ({ data, onButtonClick, query }) => {
     (a, b) => moment(b.ReportDateTime).unix() - moment(a.ReportDateTime).unix()
   );
 
-<<<<<<< HEAD
-    return (
-        <React.Fragment>
-            
-            {sortedData.length > 0 ? (
-                sortedData.map((query, index) => (
-                    <Row className="g-0 mb-1" key={index}>
-                        <Col>
-                            <Card className="mb-0">
-                                <CardHeader
-                                    onClick={() => {
-                                        navigate(`Support/TrackQuery?QueryID=${query.SupportID}`);
-                                        setSelectedRow(query);
-                                    }}
-                                >
-                                    <div className="align-items-center d-flex">
-                                        <h5
-                                            className="flex-grow-1"
-                                            style={{
-                                                cursor: "pointer", margin: "0" } }
-                                            
-                                        >
-                                            {query.QuerySubject}
-                                        </h5>
-=======
   return (
     <React.Fragment>
       {sortedData.length > 0 ? (
@@ -82,7 +57,6 @@ const QueryCard = ({ data, onButtonClick, query }) => {
                   onClick={() => {
                     // localStorage.setItem("query", JSON.stringify(query));
                     navigate(`/Support/TrackQuery?QueryID=${query.SupportID}`);
->>>>>>> 0980bce64d6858e67feb2ae6e9bfa2139ba97535
 
                     setSelectedRow(query);
                   }}

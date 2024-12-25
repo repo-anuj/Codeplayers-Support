@@ -65,7 +65,9 @@ const ActiveQueries = ({ queries }) => {
 
   // Mapping for short forms
   const NAME_SHORTFORM_MAP = {
-    "Review Pending": "SRP",
+    "Review Pending": "RP",
+    "Client Review Pending":"CRP",
+    "Support Review Pending":"SRP",
     "Approval Pending": "Approval",
     "Development Review Pending": "DRP",
   };

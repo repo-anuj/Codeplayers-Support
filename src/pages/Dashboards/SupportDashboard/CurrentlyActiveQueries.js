@@ -14,15 +14,17 @@ const ReviewPending = ({ queries }) => {
 
     // Utility: Render query status
     const renderQueryStatus = (query) => {
-        const statusLabels = [
-            { label: "Approval Pending", show: false },
-            { label: "Done", show: false },
-        ];
-        return !statusLabels.some((status) => status.label === query.CurrentStatus);
+        // Exclude queries based on the new conditions
+        if (!query.IsApproved) return false; // Exclude if IsApproved is false
+        if (query.CurrentStatus === "Review Pending") return false; // Exclude if CurrentStatus is "Review Pending"
+        if (query.CurrentStatus === "Done") return false; // Exclude if CurrentStatus is "Done"
+
+        return true; // Include in filtered queries otherwise
     };
 
-    // Filter queries to exclude those with unwanted statuses
+    // Filter queries based on the updated logic
     const filteredQueries = queries?.filter(renderQueryStatus) || [];
+
 
     // Handle card click: Navigate to ticket details page
     const handleCardClick = (queryData) => {
