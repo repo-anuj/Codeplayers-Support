@@ -35,10 +35,10 @@ const CPBreadCrumbReporting = ({
               className="d-flex align-items-center justify-content-end"
               style={{ gap: "10px", flexWrap: "wrap" }} // Ensures proper spacing and wraps on smaller screens
             >
-              <CPDateBox
+              {/* <CPDateBox
                 selectedRange={selectedRange}
                 onRangeChange={onDateRangeChange}
-              />
+              /> */}
 
               <button
                 type="button"
