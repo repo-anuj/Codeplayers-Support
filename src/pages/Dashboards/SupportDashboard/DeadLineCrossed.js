@@ -4,6 +4,7 @@ import IconsForVoucherType from "../../../Components/CPComponents/CPIcons/IconsF
 import SimpleBar from "simplebar-react";
 import moment from "moment"; // Ensure moment.js is installed
 import { useNavigate } from "react-router-dom";
+import NotAvailabe from "../../../assets/Not_Available.png"
 
 const DeadLineCrossed = ({ queries }) => {
     const navigate = useNavigate();
@@ -23,10 +24,30 @@ const DeadLineCrossed = ({ queries }) => {
     const handleCardClick = (queryData) => {
         localStorage.setItem("query", JSON.stringify(queryData));
         navigate("/ticketdetails"); // Navigate to your ticket details page
-    };
+    };  
 
-    if (filteredQueries.length === 0) {
-        return <p className="text-muted">No deadlines have been crossed.</p>;
+
+
+    // Check if queries is null, undefined, or empty
+    if (!queries || queries.length === 0) {
+        return (
+            <Col xxl={12}>
+                <Card className="card-height-100">
+                    <CardHeader className="card-header align-items-center d-flex">
+                        {IconsForVoucherType("Dead Line Crossed")}
+                        <h4 className="card-title mb-0 flex-grow-1">Dead Line Crossed</h4>
+                    </CardHeader>
+                    <CardBody className="text-center">
+                        <img
+                            src={NotAvailabe}
+                            alt="No Data Available"
+                            style={{ maxWidth: "100%", height: "auto" }}
+                        />
+                        <p className="text-muted mt-3">No recent queries available.</p>
+                    </CardBody>
+                </Card>
+            </Col>
+        );
     }
 
     return (

@@ -68,7 +68,7 @@ const ActiveQueries = ({ queries }) => {
     "Review Pending": "RP",
     "Client Review Pending":"CRP",
     "Support Review Pending":"SRP",
-    "Approval Pending": "Approval",
+    "Approval Pending": "AP",
     "Development Review Pending": "DRP",
   };
 

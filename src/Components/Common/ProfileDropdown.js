@@ -44,38 +44,6 @@ const ProfileDropdown = () => {
           </span>
         </DropdownToggle>
         <DropdownMenu className="dropdown-menu-end">
-          <h6 className="dropdown-header">Welcome {userName}!</h6>
-          <DropdownItem href="/profile">
-            <i className="mdi mdi-account-circle text-muted fs-16 align-middle me-1"></i>
-            <span className="align-middle">Profile</span>
-          </DropdownItem>
-          <DropdownItem href="/apps-chat">
-            <i className="mdi mdi-message-text-outline text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Messages</span>
-          </DropdownItem>
-          <DropdownItem href="#">
-            <i className="mdi mdi-calendar-check-outline text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Taskboard</span>
-          </DropdownItem>
-          <DropdownItem href="/pages-faqs">
-            <i className="mdi mdi-lifebuoy text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Help</span>
-          </DropdownItem>
-          <div className="dropdown-divider"></div>
-          <DropdownItem href="/pages-profile-settings">
-            <i className="mdi mdi-cog-outline text-muted fs-16 align-middle me-1"></i>{" "}
-            <span className="align-middle">Settings</span>
-          </DropdownItem>
-          <DropdownItem
-            onClick={() => {
-              logoutERPUser();
-            }}
-          >
-            <i className="mdi mdi-lock text-muted fs-16 align-middle me-1"></i>{" "}
-            <span style={{ fontSize: "13px" }} className="align-middle">
-              Lock screen
-            </span>
-          </DropdownItem>
           {/* Change Password Section */}
           <DropdownItem href="/ChangePassword">
             <i className="mdi mdi-key-outline text-muted fs-16 align-middle me-1"></i>{" "}
