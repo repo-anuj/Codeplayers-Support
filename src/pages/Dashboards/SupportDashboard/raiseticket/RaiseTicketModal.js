@@ -44,6 +44,7 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose, parent }) => {
   const query = JSON.parse(localStorage.getItem('query'));
 
   const SupportID = query?.SupportID;
+  const userRole=localStorage.getItem("userRole");
   const userType = localStorage.getItem("userType");
   const data2 = useSelector((state) => state.TicketDetail.data) || [];
   const loading = useSelector((state) => state.TicketDetail.loading);
@@ -447,7 +448,7 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose, parent }) => {
                 <label htmlFor="Menu" style={labelStyles}>
                   Menu
                 </label>
-                <div>
+                {(userRole === "Support Manager" || userRole === "Support User"||userRole==="Support Admin") ?(<div>
                   <input
                     type="checkbox"
                     id="IsCritical"
@@ -464,7 +465,7 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose, parent }) => {
                   >
                     Is Critical
                   </label>
-                </div>
+                </div>):(<></>)}
               </div>
 
               {/* Reactstrap Dropdown with Search */}

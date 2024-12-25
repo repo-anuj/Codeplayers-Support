@@ -134,11 +134,11 @@ const ActiveQueries = ({ queries }) => {
   return (
     <Col xxl={12}>
       <Card className="card-height-100" style={{ height: "487px" }}>
-        <CardHeader className="card-header align-items-center d-flex">
+        <CardHeader className="card-header align-items-center d-flex border-bottom border-1">
           {IconsForVoucherType("Recent Activity")}
           <h4 className="card-title mb-0 flex-grow-1">Active Queries</h4>
         </CardHeader>
-        <CardBody className="p-0 d-flex flex-column justify-content-center align-items-center">
+        <CardBody className="p-0 d-flex flex-column justify-content-center align-items-center ">
           <div style={{ textAlign: "center", width: "100%", maxWidth: "500px" }}>
           {queries.length === 0 ? (
                         <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "435px" }}>
@@ -161,9 +161,7 @@ const ActiveQueries = ({ queries }) => {
                     outerRadius={110}
                     innerRadius={selectedLevel > 0 ? 70 : 0}
                     onClick={handleClick}
-                    label={({ name, percent }) =>
-                      `${getShortForm(name)}: ${(percent * 100).toFixed(0)}%`
-                    } // Use short form in the label
+                     // Use short form in the label
                   >
                     {chartData.map((entry, index) => (
                       <Cell

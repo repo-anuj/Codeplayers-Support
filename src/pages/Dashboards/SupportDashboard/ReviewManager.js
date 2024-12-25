@@ -9,7 +9,7 @@ import Not_Available from "../../../assets/Not_Available.png"; // Import the Not
 
 const ApprovalPending = ({ queries }) => {
     const navigate = useNavigate();
-
+    const userRole=localStorage.getItem("userRole");
     // State to manage modal visibility and selected row data
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
@@ -19,14 +19,17 @@ const ApprovalPending = ({ queries }) => {
 
     // Handle card click: Set data to localStorage and navigate to the ticket details page
     const handleCardClick = (queryData) => {
-        setSelectedRow(queryData); // Set selected row data
-        setModalOpen(true); // Open the modal
+        if(userRole==="Client Manager"){
+            setSelectedRow(queryData); // Set selected row data
+            setModalOpen(true);
+        }
+         // Open the modal
     };
 
     return (
         <Col xxl={12}>
             <Card className="card-height-100">
-                <CardHeader className="card-header align-items-center d-flex">
+                <CardHeader className="card-header align-items-center d-flex border-bottom border-1">
                     {IconsForVoucherType("Currently Active Queries")}
                     <h4 className="card-title mb-0 flex-grow-1">Review By Approval Pending</h4>
                     <div className="fs-16 fw-bold">{filteredQueries.length}</div>

@@ -64,7 +64,7 @@ const ModuleWiseDistribution = ({ data }) => {
         <React.Fragment>
             <Col xxl={12} className="p-0">
                 <Card style={{ height: "487px", width: "100%" }}>
-                    <CardHeader className="card-header align-items-center d-flex">
+                    <CardHeader className="card-header align-items-center d-flex border-bottom border-1">
                         {IconsForVoucherType("Recent Activity")}
                         <h4 className="card-title mb-0 flex-grow-1">Module Wise Distribution</h4>
                     </CardHeader>
