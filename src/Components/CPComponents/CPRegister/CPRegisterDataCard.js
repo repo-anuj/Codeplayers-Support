@@ -276,19 +276,18 @@ const QueryCard = ({ data, onButtonClick, query }) => {
                             </td>
                           </tr>
                         )}
-
-                        <tr
+                        {query.CurrentStatus === "Approval Pending" ? (<></>) : (<tr
                           className={
                             query.IsCritical
                               ? "table-danger"
                               : query.CurrentStatus === "Done"
-                              ? "table-success"
-                              : moment
+                                ? "table-success"
+                                : moment
                                   .utc(query.DueDate)
                                   .local()
                                   .isBefore(moment())
-                              ? "table-warning"
-                              : ""
+                                  ? "table-warning"
+                                  : ""
                           }
                         >
                           <th
@@ -304,47 +303,47 @@ const QueryCard = ({ data, onButtonClick, query }) => {
                             {query.CurrentStatus === "Approval Pending"
                               ? ""
                               : query.DueDate === "0001-01-01T00:00:00"
-                              ? "Support User to be assigned"
-                              : query.CurrentStatus === "Done"
-                              ? "Query is Done"
-                              : query.IsCritical &&
-                                moment
-                                  .utc(query.DueDate)
-                                  .local()
-                                  .isBefore(moment())
-                              ? `Query is Critical and Due Date is Passed, Time Passed: ${formatDuration(
-                                  moment.duration(
-                                    moment().diff(
-                                      moment.utc(query.ReportDateTime).local()
-                                    )
-                                  )
-                                )}`
-                              : query.IsCritical
-                              ? `Query is Critical Time Passed: ${formatDuration(
-                                  moment.duration(
-                                    moment().diff(
-                                      moment.utc(query.ReportDateTime).local()
-                                    )
-                                  )
-                                )}`
-                              : moment
-                                  .utc(query.DueDate)
-                                  .local()
-                                  .isBefore(moment())
-                              ? `Due Date is Passed Time Passed: ${formatDuration(
-                                  moment.duration(
-                                    moment().diff(
-                                      moment.utc(query.ReportDateTime).local()
-                                    )
-                                  )
-                                )}`
-                              : `Time Passed: ${formatDuration(
-                                  moment.duration(
-                                    moment().diff(
-                                      moment.utc(query.ReportDateTime).local()
-                                    )
-                                  )
-                                )}`}
+                                ? "Support User to be assigned"
+                                : query.CurrentStatus === "Done"
+                                  ? "Query is Done"
+                                  : query.IsCritical &&
+                                    moment
+                                      .utc(query.DueDate)
+                                      .local()
+                                      .isBefore(moment())
+                                    ? `Query is Critical and Due Date is Passed, Time Passed: ${formatDuration(
+                                      moment.duration(
+                                        moment().diff(
+                                          moment.utc(query.ReportDateTime).local()
+                                        )
+                                      )
+                                    )}`
+                                    : query.IsCritical
+                                      ? `Query is Critical Time Passed: ${formatDuration(
+                                        moment.duration(
+                                          moment().diff(
+                                            moment.utc(query.ReportDateTime).local()
+                                          )
+                                        )
+                                      )}`
+                                      : moment
+                                        .utc(query.DueDate)
+                                        .local()
+                                        .isBefore(moment())
+                                        ? `Due Date is Passed Time Passed: ${formatDuration(
+                                          moment.duration(
+                                            moment().diff(
+                                              moment.utc(query.ReportDateTime).local()
+                                            )
+                                          )
+                                        )}`
+                                        : `Time Passed: ${formatDuration(
+                                          moment.duration(
+                                            moment().diff(
+                                              moment.utc(query.ReportDateTime).local()
+                                            )
+                                          )
+                                        )}`}
                           </th>
 
                           <td
@@ -359,8 +358,8 @@ const QueryCard = ({ data, onButtonClick, query }) => {
                             <span className="fw-semibold">
                               <div>
                                 {query.CurrentStatus ===
-                                "Done" ? null : query.TodaysStatus ===
-                                  "NOT UPDATED" ? (
+                                  "Done" ? null : query.TodaysStatus ===
+                                    "NOT UPDATED" ? (
                                   <span
                                     style={{
                                       color: "red",
@@ -377,7 +376,8 @@ const QueryCard = ({ data, onButtonClick, query }) => {
                               </div>
                             </span>
                           </td>
-                        </tr>
+                        </tr>)}
+                        
                       </tbody>
                     </table>
                   </div>
