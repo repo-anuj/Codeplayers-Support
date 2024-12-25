@@ -50,7 +50,7 @@ const QueryRegister = () => {
 
     // Check if `queriesData.record` exists and is an array
     const queries = Array.isArray(queriesData.record) ? queriesData.record : [];
-console.log(queries);
+
     // Extract unique `CurrentStatus` and `Module` values for filter dropdowns
     const uniqueStatusOptions = [...new Set(queries?.map(query => query.CurrentStatus))];
     const uniqueModuleOptions = [...new Set(queries?.map(query => query.Module))];

@@ -102,7 +102,7 @@ const Login = (props) => {
         navigate("/support-dashboard");
       }
       
-      console.log(JSON.stringify(data));
+      
     }
   }, [success, navigate, data]);
   const validation = useFormik({
@@ -122,7 +122,7 @@ const Login = (props) => {
     },
   });
   
-    console.log(error);
+
 
   const handleRegister = () => {
     navigate("/register");

@@ -22,7 +22,7 @@ const ERPDashboard = () => {
   const loading = useSelector((state) => state.ERPDashboard.loading);
   const success = useSelector((state) => state.ERPDashboard.success);
   const navigate = useNavigate();
-  console.log(data);
+  
   const dataRecords = data;
 
   const today = new Date();

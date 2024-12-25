@@ -74,7 +74,7 @@ const OtpVerification = () => {
         };
 
         // Dispatch the action with the payload
-        // console.log(payload)
+        
         dispatch(POST_OTP_Sending(payload))
             
     };

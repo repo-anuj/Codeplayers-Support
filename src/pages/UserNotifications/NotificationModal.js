@@ -9,7 +9,6 @@ const NotificationModal = ({ isOpen, toggle, notification }) => {
   const handleApproved = async () => {
     setLoading(true);
     setapprovedSuccess(null);
-    console.log("button clicked");
   };
 
   return (

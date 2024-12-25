@@ -21,7 +21,6 @@ const DataTable = ({ data, columns, heading, onUpdate }) => {
     const saveEdit = () => {
         if (onUpdate && editRowIndex !== null) {
             const updatedRow = editableData[editRowIndex];
-            console.log("Updated Row Before Sending to Parent:", updatedRow); // Log updated row
             onUpdate(updatedRow); // Pass updated row to parent
         }
         setEditRowIndex(null);

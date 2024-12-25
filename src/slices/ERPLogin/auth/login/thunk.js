@@ -15,7 +15,6 @@ export const POST_Vendor_Login = createAsyncThunk(
       localStorage.setItem("verifiedOTP",data.otpVerified);
       localStorage.setItem("verifiedAddress",data.addressVerified);
       localStorage.setItem("userName", user.userName);
-      localStorage.setItem("password", user.password);
       localStorage.setItem("userType",data.userType);
       localStorage.setItem("userRole", data.userRole);
       console.log(data);
@@ -26,23 +25,26 @@ export const POST_Vendor_Login = createAsyncThunk(
   }
 );
 
+
 export const logoutLicenseUser = async () => {
   try {
     await removeLocalStorageItemsForLogout();
 
-    const currentPath = window.location.href;
-    const urlPatternWithID = /\/somePath\/\d+/; // Update this regex to match the pattern for your specific ID, e.g., `/somePath/123`
+    const currentPath = window.location.pathname; // Use pathname to get only the endpoint
+    let urlPatternWithID = /\/somePath\/\d+/;
 
-    if (urlPatternWithID) {
+    // Check if the current path matches the pattern
+    if (urlPatternWithID.test(currentPath)) {
       window.location.href = `/landing`;
     } else {
-      localStorage.setItem('lastVisitedPath', currentPath);
+      localStorage.setItem('lastVisitedPath', currentPath); // Store only the endpoint
       window.location.href = "/landing";
     }
   } catch (error) {
     console.error("Error during logout:", error);
   }
 };
+
 
 
 function removeLocalStorageItemsForLogout() {

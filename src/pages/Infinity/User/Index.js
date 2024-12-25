@@ -12,10 +12,6 @@ const Users = () => {
     const loading = useSelector((state) => state.UserData.loading);
     const error = useSelector((state) => state.UserData.error);
     const dispatch = useDispatch();
-
-
-    console.log(data);
-
     const toggleModal = () => {
         setIsModalOpen(!isModalOpen);
     };
@@ -27,14 +23,7 @@ const Users = () => {
 
 
     const handleRowUpdate = (updatedRow) => {
-        console.log(updatedRow);
         dispatch(PATCH_USER_Data(updatedRow))
-            .then((response) => {
-                console.log("Row updated successfully:", response);
-            })
-            .catch((error) => {
-                console.error("Error updating row:", error);
-            });
     };
 
     const columns = [

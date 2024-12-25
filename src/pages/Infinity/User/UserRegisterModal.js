@@ -37,8 +37,7 @@ const UserRegisterModal = ({ isOpen, toggle }) => {
         }
         return errors;
     };
-    // console.log(data);
-    // console.log(error);
+   
 
     const formik = useFormik({
         initialValues: {
