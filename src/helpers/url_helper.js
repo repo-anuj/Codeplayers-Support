@@ -15,10 +15,10 @@ export const VENDOR_POST_REGISTER = "/api/licensing/registersubscriber";
 // export const VENDOR_POST_LOGIN = "/api/authentication/authenticate";
 
 export const VENDOR_POST_LOGIN = "/api/authentication/authenticate";
-export const OTP_VERIFICATION ="/Api/licensing/sendOTP";
-export const OTP_VERIFIED ="/Api/licensing/verifyOTP";
-export const VENDOR_POST_FORGOT_PASSWORD="";
-export const ADDRESS_DETAILS ="/Api/licensing/updatesubscriber";
+export const OTP_VERIFICATION = "/Api/licensing/sendOTP";
+export const OTP_VERIFIED = "/Api/licensing/verifyOTP";
+export const VENDOR_POST_FORGOT_PASSWORD = "";
+export const ADDRESS_DETAILS = "/Api/licensing/updatesubscriber";
 
 export const GET_MAX_TICKET_NUMBER = "/api/support/MaxTicketNumber?TicketType=Support"
 
@@ -26,16 +26,16 @@ export const GET_MAX_TICKET_NUMBER = "/api/support/MaxTicketNumber?TicketType=Su
 export const GET_VENDOR_DASHBOARD = "/api/InfinityX/DashboardData";
 
 //support
-export const GET_ERP_SUPPORT_DASHBOARD ="/API/Support/Ticket?EntryType=Support"
+export const GET_ERP_SUPPORT_DASHBOARD = "/API/Support/Ticket?EntryType=Support"
 // export const GET_ERP_SUPPORT_DASHBOARD ="https://api.jsonbin.io/v3/b/66ffc847e41b4d34e43cd031"
 
 //training
 export const GET_ERP_TRAINING_DASHBOARD = "/API/Support/Ticket?EntryType=Training"
 //user
-export const USER_REGISTER ="/api/support/RegisterSubscriberSubUser";
+export const USER_REGISTER = "/api/support/RegisterSubscriberSubUser";
 
-export const QUERY_TICKET="";
-export const POST_RAISE_TICKET="/API/Support/Ticket";
+export const QUERY_TICKET = "";
+export const POST_RAISE_TICKET = "/API/Support/Ticket";
 
 export const GET_LIST_OF_MODULES = "/API/Support/ModuleList";
 export const GET_LIST_OF_CLIENTS = "/API/Support/ClientList";
@@ -48,7 +48,7 @@ export const GET_PRODUCT_ORDER_HISTORY = "/api/Support/ProductOrderHistory";
 export const GET_LICENSE_HISTORY = "/api/Support/LicenseActivationHistory";
 
 // ticketDetails
-export const GET_TICKET_DETAILS="/API/Support/Ticket/";
+export const GET_TICKET_DETAILS = "/API/Support/Ticket/";
 
 export const GET_LIST_OF_USER = "/API/Support/RegisterSubscriberSubUser";
 
@@ -56,22 +56,22 @@ export const GET_LIST_OF_USER = "/API/Support/RegisterSubscriberSubUser";
 export const POST_RATING = "/API/Support/Rating";
 
 
-export const GET_ERP_TRAINING_TASK ="/api/support/TrainingTask";
+export const GET_ERP_TRAINING_TASK = "/api/support/TrainingTask";
 
 
-export const GET_ALLOTED_TRAINING  ="/API/Support/AllotTraining";
+export const GET_ALLOTED_TRAINING = "/API/Support/AllotTraining";
 
 export const POST_ALLOT_TRAINING = "/API/Support/AllotTraining";
 
 export const GET_LIST_OF_SUPPORTUSERS = "/api/Support/RegisterSubscriberSubUser";
 
-export const GET_LIST_OF_SUPPORTSTATUS="/api/Support/StatusList";
+export const GET_LIST_OF_SUPPORTSTATUS = "/api/Support/StatusList";
 
 export const POST_DAILY_STATUS = "/api/Support/DailyStatus/";
 export const GET_DAILYSTATUS_DETAILS = "API/Support/DailyStatus/";
 export const GET_ATTACHMENT_DETAILS = "API/Support/TicketMedia/";
-export const POST_APPROVAL_PENDING="api/support/Approval/"
-export const POST_VENDOR_CHANGE_PASSWORD="";
+export const POST_APPROVAL_PENDING = "api/support/Approval/"
+export const POST_VENDOR_CHANGE_PASSWORD = "api/licensing/changepassword/";
 
 // export const POST_VENDORRFP_Data = "/api/InfinityX/VendorRFPDetails";
 // export const SAVE_VENDORRFP_Data = "/api/InfinityX/SaveRFPDetails";

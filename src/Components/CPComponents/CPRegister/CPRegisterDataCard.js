@@ -51,8 +51,17 @@ const QueryCard = ({ data, onButtonClick, query }) => {
         sortedData.map((query, index) => (
           <Row className="g-0 mb-1" key={index}>
             <Col>
-              <Card className={query.CurrentStatus === "Approval Pending" ? "opacity-50" : "" }
-                            style={query.CurrentStatus === "Approval Pending" ? { pointerEvents: "none" } : {}}>
+              <Card  className={query.CurrentStatus === "Approval Pending" ? "opacity-50" : ""}
+                style={{
+                  ...(
+                    query.CurrentStatus === "Approval Pending"
+                      ? { pointerEvents: "none" }
+                      : {}
+                  ),
+                  marginBottom: -20, // This property is always applied
+                }}
+>
+                
                 <CardHeader
                   onClick={() => {
                     // localStorage.setItem("query", JSON.stringify(query));
@@ -173,15 +182,15 @@ const QueryCard = ({ data, onButtonClick, query }) => {
                         <span>
                           {query.CompletedOn !== "0001-01-01T00:00:00"
                             ? moment
-                                .utc(query.CompletedOn)
-                                .local()
-                                .format("DD/MM/YYYY hh:mm:ss A")
+                              .utc(query.CompletedOn)
+                              .local()
+                              .format("DD/MM/YYYY hh:mm:ss A")
                             : query.DueDate !== "0001-01-01T00:00:00"
-                            ? moment
+                              ? moment
                                 .utc(query.DueDate)
                                 .local()
                                 .format("DD/MM/YYYY hh:mm:ss A")
-                            : ""}
+                              : ""}
                         </span>
                       </Col>
                       <Col
@@ -377,7 +386,7 @@ const QueryCard = ({ data, onButtonClick, query }) => {
                             </span>
                           </td>
                         </tr>)}
-                        
+
                       </tbody>
                     </table>
                   </div>
