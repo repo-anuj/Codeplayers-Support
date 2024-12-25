@@ -12,7 +12,7 @@ const ReviewPending = ({ queries }) => {
     // State to manage modal visibility and selected row data
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedRow, setSelectedRow] = useState(null);
-    console.log(queries);
+   
     // Filter queries to exclude those with status "Done"
     const filteredQueries = queries?.filter(
         (query) => query.CurrentStatus === null
@@ -111,8 +111,7 @@ const ReviewPending = ({ queries }) => {
                 modalOpen={modalOpen}
                 modalData={selectedRow} // Pass selected row data to modal
                 selectedRow={selectedRow} // Also pass for form submission
-                onClose={() => { setModalOpen(false); window.location.reload(); }}
- // Close modal
+                onClose={() => { setModalOpen(false)}}
             />
         </Col>
     );

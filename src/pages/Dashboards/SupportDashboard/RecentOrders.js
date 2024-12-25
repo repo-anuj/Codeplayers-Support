@@ -7,7 +7,7 @@ import moment from "moment"; // Ensure moment.js is installed
 const RecentOrders = ({ queries }) => {
     // Check if queries is null, undefined, or empty 
 
-    console.log(queries);
+
 
     if (!queries || queries.length === 0) {
         return <p className="text-muted">No recent queries available.</p>;

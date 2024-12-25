@@ -5,9 +5,6 @@ import { Card, CardHeader, CardBody, Button, Input, FormGroup, Label } from "rea
 const TicketRatingsCard = ({ rated, onSubmitRating}) => {
   const [userRating, setUserRating] = useState(0);
   const [userRemarks, setUserRemarks] = useState("");
-  console.log(rated);
-  
-
   const handleSubmit = () => {
     if (userRating > 0) {
       onSubmitRating(userRating, userRemarks); // Include remarks on submission

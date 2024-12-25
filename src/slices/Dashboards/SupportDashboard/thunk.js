@@ -1,4 +1,8 @@
-import { ERP_GET_SupportDashboard, Raise_Post_Ticket,Raise_Patch_Ticket } from "../../../helpers/fakebackend_helper";
+import {
+  ERP_GET_SupportDashboard,
+  Raise_Post_Ticket,
+  Raise_Patch_Ticket,
+} from "../../../helpers/fakebackend_helper";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 export const GET_SupportDashboard = createAsyncThunk(
@@ -13,16 +17,11 @@ export const GET_SupportDashboard = createAsyncThunk(
   }
 );
 
-
 export const POST_RaiseTicket = createAsyncThunk(
   "RaiseTicket/post",
   async (body, thunkAPI) => {
     try {
-      console.log(body);
       if (!body) return;
-
-      console.log(body);
-
       const response = Raise_Post_Ticket(body);
       const data = await response;
       return;
@@ -37,13 +36,10 @@ export const PATCH_RaiseTicket = createAsyncThunk(
   "RaiseTicket/patch",
   async (body, thunkAPI) => {
     try {
-      console.log(body);
       if (!body) return;
 
-      console.log(body);
-
       const response = await Raise_Patch_Ticket(body);
-      console.log(response.data);
+
       return response.data;
     } catch (error) {
       return thunkAPI.rejectWithValue(error.response.data);

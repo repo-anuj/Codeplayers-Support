@@ -134,7 +134,7 @@ const VendorDashboard = () => {
     acc[status] = (acc[status] || 0) + 1;
     return acc;
   }, {});
-  console.log(countByStatus);
+
   const dateChange = (newRange) => {
     if (newRange.length === 2) {
       setSelectedRange(newRange);

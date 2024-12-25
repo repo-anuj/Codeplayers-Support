@@ -7,14 +7,15 @@ export const POST_DailyStatus = createAsyncThunk(
         try {
             
             if (!body) return("error");
-            console.log(body);
+         
             const payload={};
             payload.Support=body.SupportID;
             payload.SupportUser=body.SupportUser;
             payload.SupportStatus=body.CurrentStatus;
             payload.Remarks=body.solutionDetails;
             payload.DueDate=body.DueDate;
-            console.log("pay ",payload);
+            payload.ShareStatus=body.ShareStatus
+         
 
             const response = await Daily_Post_Status(payload);
 
@@ -30,7 +31,7 @@ export const PATCH_DailyStatus=createAsyncThunk(
     async({body},thunkAPI)=>{
         try{
             if (!body) return ("error");
-            console.log(body);
+          
             const payload = {};
             payload.DailyID=body.dailyID;
             payload.Support = body.SupportID;
@@ -39,14 +40,14 @@ export const PATCH_DailyStatus=createAsyncThunk(
             payload.Remarks = body.solutionDetails;
             const date = new Date(body.DueDate);
             payload.DueDate = date.toISOString();
-            console.log("pay ", payload);
+            
 
             const response = await Daily_Patch_Status(payload);
 
             return response;
         }
         catch(error){
-            console.log(error.response.data);
+           
             return thunkAPI.rejectWithValue(error.response.data);
         }
     }

@@ -23,9 +23,9 @@ const TrainingDashboard = () => {
     const loading = useSelector((state) => state.TrainingDashboard.loading);
     const success = useSelector((state) => state.TrainingDashboard.success);
     const navigate = useNavigate();
-    console.log(data);
+ 
     const dataRecords = data && data.record ? data : { record: [] };
-    // console.log(dataRecords)
+
     const today = new Date();
     const storedRange = JSON.parse(sessionStorage.getItem("selectedRange"));
     const [selectedRange, setSelectedRange] = useState([null, null]);

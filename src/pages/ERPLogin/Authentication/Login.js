@@ -101,8 +101,8 @@ const Login = (props) => {
       else if (userType == "CPTeam") {
         navigate("/support-dashboard");
       }
-
-      console.log(JSON.stringify(data));
+      
+      
     }
   }, [success, navigate, data]);
   const validation = useFormik({
@@ -122,8 +122,8 @@ const Login = (props) => {
       dispatch(POST_Vendor_Login(values));
     },
   });
+  
 
-  console.log(error);
 
   const handleRegister = () => {
     navigate("/register");

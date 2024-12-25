@@ -31,8 +31,12 @@ const formatLocalDateTime = (date) => {
 const RaiseTicketModal = ({ isOpen, toggle, onClose, parent }) => {
   const [clientName, setClientName] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+<<<<<<< HEAD
   const [dropdownOpenSubscriberID, setDropdownOpenSubscriberID] = useState(false);
   const [dropdownOpenTicketUser, setDropdownOpenTicketUser] = useState(false);
+=======
+
+>>>>>>> 0980bce64d6858e67feb2ae6e9bfa2139ba97535
   const [currentMenuID, setCurrentMenuID] = useState("");
   const [searchTerm, setSearchTerm] = useState(""); // State for search functionality
   const [searchTermSubscriberID, setSearchTermSubscriberID] = useState("");
@@ -208,18 +212,21 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose, parent }) => {
 
 
   const toggleDropdown = () => setDropdownOpen((prevState) => !prevState);
-  const toggleDropdownSubscriberID = () => setDropdownOpenSubscriberID((prevState) => !prevState);
-  const toggleDropdownTicketUser = () => setDropdownOpenTicketUser((prevState) => !prevState);
+  
   // Handle search input change
   const handleSearch = (e) => {
     setSearchTerm(e.target.value?.toLowerCase());
   };
+<<<<<<< HEAD
   const handleSearchSubscriberID = (e) => {
     setSearchTermSubscriberID(e.target.value?.toLowerCase());
   };
   const handleSearchTicketUser = (e) => {
     setSearchTermTicketUser(e.target.value?.toLowerCase());
   };
+=======
+ 
+>>>>>>> 0980bce64d6858e67feb2ae6e9bfa2139ba97535
 
 
 
@@ -642,11 +649,22 @@ const RaiseTicketModal = ({ isOpen, toggle, onClose, parent }) => {
           </Row>
         </form>
       </ModalBody>
-      <ModalFooter style={{ padding: "10px" }}>
-        <Button color="primary" type="submit" size="sm" onClick={formik.handleSubmit}>
+      <ModalFooter className="d-flex p-2">
+        <Button
+          color="primary"
+          type="submit"
+          size="sm"
+          onClick={formik.handleSubmit}
+          className="flex-fill me-2"
+        >
           Submit
         </Button>
-        <Button color="secondary" size="sm" onClick={toggle}>
+        <Button
+          color="secondary"
+          size="sm"
+          onClick={toggle}
+          className="flex-fill"
+        >
           Cancel
         </Button>
       </ModalFooter>

@@ -101,8 +101,7 @@ const TrainingAllotment = () => {
             allotedData.includes(taskID)
         );
 
-        console.log("matchedIDs");
-        console.log(matchedTaskIDs);
+     
 
         // Function to get matching Task Names based on TaskID
         function getMatchingTaskNames(x, y) {
@@ -152,7 +151,7 @@ const TrainingAllotment = () => {
             );
             setModalOpen(true);
         } else {
-            console.log("Submitting the following data:", userTaskData);
+            
             // Uncomment below for actual submission
             dispatch(POST_AllotTraining(userTaskData));
 
@@ -191,16 +190,8 @@ const TrainingAllotment = () => {
         // Close the modal
         toggleModal();
 
-        // Log to check if the removal was successful
-        console.log("Updated selected rows:", updatedSelectedRows);
-        console.log("Updated userTaskData:", updatedTaskIDs);
-        console.log("Updated userTaskData:", userTaskData);
+  
     };
-
-    useEffect(() => {
-        console.log("Updated userTaskData2:", userTaskData);
-    }, [userTaskData]); // This will run whenever userTaskData changes
-
 
 
     return (

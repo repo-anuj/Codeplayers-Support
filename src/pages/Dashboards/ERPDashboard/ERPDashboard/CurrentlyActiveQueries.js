@@ -25,7 +25,6 @@ const CurrentlyActiveQueries = ({ queries }) => {
 filterActiveQueries(queries)
   .then(result => {
     activeQueries = result; // Store the filtered data
-    console.log("Active Queries:", activeQueries); // Use activeQueries as needed
   })
   .catch(error => {
     console.error("Error filtering queries:", error.message);

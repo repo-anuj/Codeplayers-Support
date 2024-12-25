@@ -150,7 +150,7 @@ const OrderDetails = () => {
     };
     setOrder({ ...order, items: updatedItems });
     toggleModal();
-    // console.log("order in save "+JSON.stringify(order));
+   
   };
  
 
@@ -172,14 +172,12 @@ const OrderDetails = () => {
 
   const handleDataChange = (data) => {
     setTermsData(data);
-    // console.log("Updated Terms Data:", data);
   };
   const handleSaveButton=()=>{
     const OrderAndTerms={
       order:order,
       terms:termsData,
     };
-    console.log(OrderAndTerms);
   }
   return (
     <div className="page-content">

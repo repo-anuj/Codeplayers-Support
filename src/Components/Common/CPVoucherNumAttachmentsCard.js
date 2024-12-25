@@ -125,7 +125,7 @@ const CPVoucherNumAttachmentsCard = () => {
       file: photo,
     };
 
-    console.log(data);
+   
 
     try {
       // Perform form submission logic

@@ -39,22 +39,18 @@ const CPStepsTracking = ({
 
   // Handle row click
   
-  console.log(SupportID)
+ 
   // Effect to run when selectedRow changes
   useEffect(() => {
     if (SupportID) {
-      const now = new Date();
-      console.log(now.toISOString()); // Logs the date and time in ISO 8601 format
-
       dispatch(GET_TicketDetails(SupportID));
       dispatch(GET_DailyStatusDetails(SupportID));
-      console.log(DailyStatusByIdData); // Assuming this is the data you want to log
     }
   }, [ SupportID,dispatch]); 
   const handleClose=()=>{
     dispatch(GET_DailyStatusDetails(SupportID));
   }
-  console.log(query);
+  
   // Icon selection logic
   const getIconClass = (statusName) => {
     switch (statusName) {

@@ -40,3 +40,5 @@ export * from "./Dashboards/SupportDashboard/DailyStatus/DailyStatusById/thunk"
 export  * from "./ERPLogin/auth/ChangePassword/thunk"
 
 export * from "./Dashboards/SupportDashboard/TicketDetails/GetMedia/thunk"
+
+export * from "./Dashboards/SupportDashboard/ApprovalPending/thunk"

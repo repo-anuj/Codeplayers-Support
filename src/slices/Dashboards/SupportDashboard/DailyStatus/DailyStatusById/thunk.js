@@ -7,8 +7,6 @@ export const GET_DailyStatusDetails = createAsyncThunk(
     'DailyStatusDetails/post',
     async (SupportID, thunkAPI) => {
         try {
-            console.log('Fetching daily status details for ticketID:', SupportID);
-
             if (!SupportID) {
                 return thunkAPI.rejectWithValue('Support ID could not be extracted from the URL.');
             }

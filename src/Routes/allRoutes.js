@@ -9,7 +9,6 @@ import Register from "../pages/Register/Authentication";
 import Registration from "../pages/ERPLogin/jhaki/Registration";
 import UserOnboarding from "../pages/AddressVerification/UserOnboarding";
 import VendorDashboard from "./../pages/Dashboards/VendorDashboard";
-import InfinityDashboard from "../pages/Dashboards/InfinityDashboard";
 import TrainingDashboard from "../pages/Dashboards/TrainingDashboard";
 import QuotationRegister from "../pages/QuotationRegister/QuotationRegister";
 import OrderDetails from "../pages/QuotationRegister/OrderDetails";
@@ -123,15 +122,6 @@ const authProtectedRoutes = [
       <RouteProtection
         component={<VendorDashboard />}
         allowedUserTypes={["Vend-X"]}
-      />
-    ),
-  },
-  {
-    path: "/InfinityDashboard",
-    component: (
-      <RouteProtection
-        component={<InfinityDashboard />}
-        allowedUserTypes={["Infinity-ERP"]}
       />
     ),
   },

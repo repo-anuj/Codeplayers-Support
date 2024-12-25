@@ -10,7 +10,7 @@ const ModuleData = ({ data }) => {
     const [moduleLabels, setModuleLabels] = useState([]);
     const [moduleSummary, setModuleSummary] = useState({});
 
-    console.log(data);
+
 
     useEffect(() => {
         if (moduleData && moduleData.length > 0) {
