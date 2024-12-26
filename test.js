@@ -149,7 +149,7 @@ const OrderDetails = () => {
         };
         setOrder({ ...order, items: updatedItems });
         toggleModal();
-        console.log("order in save " + JSON.stringify(order));
+        
     };
 
 
@@ -171,7 +171,7 @@ const OrderDetails = () => {
 
     const handleDataChange = (data) => {
         setTermsData(data);
-        console.log("Updated Terms Data:", data);
+        
     };
     return (
         <div className="page-content">

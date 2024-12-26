@@ -52,7 +52,6 @@ const DailyStatus = () => {
   const DailyStatusByIdError=useSelector((state)=>state.DailyStatusById.error);
   const DailyStatusError = useSelector((state) => state.DailyStatus.error);
   const dispatch = useDispatch();
-  console.log(data);
   // Local state to manage filtered data
   const [queriesData, setQueriesData] = useState([]);
 
@@ -91,17 +90,17 @@ const DailyStatus = () => {
     // });
     values.SupportID = selectedRow.SupportID;
     if(values.dailyID==""){
-      console.log("without dailyID", {values });
+      
       dispatch(POST_DailyStatus({ body: values }));
     }
     else{
-      console.log("WithDailyID",{values});
+      
       dispatch(PATCH_DailyStatus({body:values}));
     }
     
     
     
-    console.log({values});
+   
     toggleModal(); // Close the modal after submission
   };
 
@@ -127,18 +126,13 @@ const DailyStatus = () => {
   // Function to handle row click
   const handleRowClick = (rowData) => {
     setSelectedRow(rowData); // Store clicked row's data
-    console.log(rowData);
-    const now = new Date();
-    console.log(now.toISOString()); // Logs the date and time in ISO 8601 format
  // Logs the current date and time
     var SupportID=rowData.SupportID;
     dispatch(GET_DailyStatusDetails(SupportID));
-    console.log(DailyStatusByIdData);
      // Open modal
   };
   const openModal = (dailyID) => {
     if (dailyID) {
-      console.log("DailyID clicked:", dailyID);
       // Open a modal or perform other actions using the dailyID
       setModalData(dailyID); // Example: Set state for the modal
       setModal(true); // Example: Open the modal

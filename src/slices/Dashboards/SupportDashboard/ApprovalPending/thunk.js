@@ -18,7 +18,7 @@ export const POST_ApprovalPending = createAsyncThunk(
         try {
 
             if (!body) return ("error");
-            console.log(body);
+           
             
 
             const response = await Approval_Post_Status(body);

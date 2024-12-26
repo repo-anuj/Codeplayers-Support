@@ -33,7 +33,7 @@ const SupportDashboard = () => {
   const loading = useSelector((state) => state.SupportDashboard.loading);
   const success = useSelector((state) => state.SupportDashboard.success);
   const navigate = useNavigate();
-console.log(data);
+  console.log(data);
   const today = new Date();
   const storedRange = JSON.parse(sessionStorage.getItem("selectedRange"));
   const [selectedRange, setSelectedRange] = useState([null, null]);
@@ -119,7 +119,8 @@ console.log(data);
                   <ActiveQueries queries={Currdata || []} />
                 </Col>
                 <Col xs="12" md="4">
-                  <CurrentlyActiveQueries queries={Currdata || []} />
+                 <CurrentlyActiveQueries queries={Currdata || []} />
+                  
                 </Col>
                 <Col xs="12" md="4">
                   <ReviewPending queries={Currdata ||[]}/>

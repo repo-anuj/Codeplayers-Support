@@ -116,9 +116,6 @@ const Settings = ({ selectedCategories, setSelectedCategories }) => {
             navigate("/dashboards-erp");
         }
     }, [success, navigate, data]);
-    console.log(selectedCategories);
-    console.log(data);
-    console.log(success);
         return (
         <React.Fragment>
             <ParticlesAuth>
@@ -194,7 +191,6 @@ const Settings = ({ selectedCategories, setSelectedCategories }) => {
                                                         setSelectedCategories={setSelectedCategories}
                                                         onSave={() => {
                                                             // Save selected categories logic here
-                                                            console.log("Selected Categories:", Array.from(selectedCategories));
                                                             tabChange("2");
                                                             // You could also trigger a backend API call or local storage update
                                                         }}

@@ -49,11 +49,11 @@ const Login = (props) => {
   const [showPassword, setShowPassword] = useState(false); //Set Show Password
   const [userLogin, setUserLogin] = useState({}); // Initialize as an object
   const [autoSubmitted, setAutoSubmitted] = useState(false); // Track auto submission
-  const userType=(localStorage.getItem("userType"));
+  const userType = (localStorage.getItem("userType"));
   useEffect(() => {
     // Retrieve userName and password from localStorage
     const userName = localStorage.getItem("userName");
-    const password = localStorage.getItem("password");
+    const password = "";
 
     if (userName && password) {
       // Set the userLogin state with the stored credentials
@@ -64,7 +64,7 @@ const Login = (props) => {
         setAutoSubmitted(true);
         setTimeout(() => {
           validation.handleSubmit();
-        },10); // 2-second delay
+        }, 10); // 2-second delay
       }
     }
   }, [autoSubmitted]);
@@ -73,14 +73,14 @@ const Login = (props) => {
     const lastVisitedPath = localStorage.getItem('lastVisitedPath');
     const userType = localStorage.getItem('userType');
 
-    if(success && lastVisitedPath){
+    if (success && lastVisitedPath) {
       window.location.href = lastVisitedPath;
       localStorage.removeItem('lastVisitedPath');
     }
-    else if(success && userType === "Infinity-ERP") {
+    else if (success && userType === "Infinity-ERP") {
       navigate("/InfinityDashboard");
     }
-    else if(success && userType === "Support-Portal") {
+    else if (success && userType === "Support-Portal") {
       navigate("/support-dashboard");
     }
   }, [success, navigate]);
@@ -88,7 +88,7 @@ const Login = (props) => {
   useEffect(() => {
     if (success) {
       // Navigate based on OTP verification status
-      
+
       if (userType == "Vend-X") {
         navigate("/vendor-dashboard");
       }
@@ -102,7 +102,7 @@ const Login = (props) => {
         navigate("/support-dashboard");
       }
       
-      console.log(JSON.stringify(data));
+      
     }
   }, [success, navigate, data]);
   const validation = useFormik({
@@ -117,12 +117,13 @@ const Login = (props) => {
       userName: Yup.string().required("Please Enter Your username"),
       password: Yup.string().required("Please Enter Your Password"),
     }),
+
     onSubmit: (values) => {
       dispatch(POST_Vendor_Login(values));
     },
   });
   
-    console.log(error);
+
 
   const handleRegister = () => {
     navigate("/register");
@@ -163,9 +164,9 @@ const Login = (props) => {
               <Col md={8} lg={6} xl={5}>
                 <Card className="mt-4">
                   <CardBody className="p-4" style={{ marginBottom: "-3.5rem" }}>
-                    
 
-                    {error && (<Alert color="danger"> {error.message||error} </Alert>)}
+
+                    {error && (<Alert color="danger"> {error.message || error} </Alert>)}
                     <div className="p-2 mt-4">
                       <Form
                         onSubmit={(e) => {
@@ -282,18 +283,17 @@ const Login = (props) => {
                             <p className="mb-0">New to CODEPLAYERS? <Link to="/register" className="fw-semibold text-primary text-decoration-underline">Register </Link></p>
                           </div>
 
-
-                          <div className="text-center mt-sm-5 mb-4 text-white-50">
-                            <div>
+                          <div className="text-center mb-sm-5 text-white-50">
+                            <div style={{ display: "flex", justifyContent: "center", alignItems: "center"}}>
                               <img
                                 src={infinity3}
                                 alt="infinityLogo"
                                 height="60"
                                 width="212"
                                 style={{
-                                  "@media (max-width: 767px)": {
-                                    marginTop: "0.5rem",
-                                  },
+                                  maxWidth: "100%",
+                                  height: "auto",
+                                  margin: "0 auto",
                                 }}
                               />
                             </div>

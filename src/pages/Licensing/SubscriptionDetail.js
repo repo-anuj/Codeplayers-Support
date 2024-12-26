@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Card, CardBody, Badge, Row, Col, Table } from "reactstrap";
+import { Card, CardBody, Badge, Row, Col, Button, Collapse } from "reactstrap";
 import { GET_License_History } from "../../slices/Licensing/thunk";
 
 // Utility function to format date
@@ -21,12 +21,11 @@ const formatDate = (dateString) => {
 const LicenseDetails = () => {
   const dispatch = useDispatch();
   const licenseHistoryData = useSelector((state) => state.LicenseHistory.data) || [];
+  const [activeAccordion, setActiveAccordion] = useState(null); // State to track active accordion
 
   useEffect(() => {
     dispatch(GET_License_History());
-  }, []);
-
-
+  }, [dispatch]);
 
   const subscriptionDetails = {
     subscriptionKey: "50928300000",
@@ -42,6 +41,10 @@ const LicenseDetails = () => {
     localIp: "192.168.0.99",
   };
 
+  // Toggle accordion section
+  const toggleAccordion = (index) => {
+    setActiveAccordion(activeAccordion === index ? null : index);
+  };
 
   return (
     <div
@@ -105,9 +108,6 @@ const LicenseDetails = () => {
       <Card className="mt-4 shadow-sm">
         <CardBody>
           <h5 style={{ fontWeight: "bold", marginBottom: "20px" }}>Activation Details</h5>
-          <p style={{ marginBottom: "30px", color: "#6c757d", fontSize: "0.95rem" }}>
-            This subscription is currently being used on the following computer:
-          </p>
           <div className="d-flex flex-wrap justify-content-between align-items-start">
             <div style={{ flex: "1 1 25%", minWidth: "200px", marginBottom: "15px" }}>
               <h6 style={{ fontWeight: "bold", marginBottom: "8px", color: "#495057" }}>
@@ -125,67 +125,72 @@ const LicenseDetails = () => {
                 {subscriptionDetails.operatingSystem}
               </p>
             </div>
-            <div style={{ flex: "1 1 25%", minWidth: "200px", marginBottom: "15px" }}>
-              <h6 style={{ fontWeight: "bold", marginBottom: "8px", color: "#495057" }}>
-                Public IP Address
-              </h6>
-              <p style={{ margin: 0, fontSize: "0.95rem", color: "#212529" }}>
-                {subscriptionDetails.publicIp}
-              </p>
-            </div>
-            <div style={{ flex: "1 1 25%", minWidth: "200px", marginBottom: "15px" }}>
-              <h6 style={{ fontWeight: "bold", marginBottom: "8px", color: "#495057" }}>
-                Local IP Address
-              </h6>
-              <p style={{ margin: 0, fontSize: "0.95rem", color: "#212529" }}>
-                {subscriptionDetails.localIp}
-              </p>
-            </div>
           </div>
         </CardBody>
-      </Card>   
+      </Card>
 
       {/* Activation History */}
       <Card style={{ marginTop: "20px" }}>
         <CardBody>
           <h5 style={{ fontWeight: "bold", marginBottom: "20px" }}>Activation History</h5>
-          <Table bordered responsive>
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>Action</th>
-                <th>Mode</th>
-                <th>Computer</th>
-              </tr>
-            </thead>
-            <tbody>
-              {licenseHistoryData.map((history, index) => (
-                <tr key={index}>
-                  <td>
-                    {new Intl.DateTimeFormat("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "2-digit",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: true,
-                    }).format(new Date(history.RequestDateTime))}
-                  </td>
-                  <td>
+          {licenseHistoryData.map((history, index) => (
+            <div key={index} style={{ marginBottom: "10px" }}>
+              <div
+                style={{
+                  padding: "10px 15px",
+                  backgroundColor: "#f8f9fa",
+                  border: "1px solid #e9ecef",
+                  cursor: "pointer",
+                }}
+                onClick={() => toggleAccordion(index)}
+              >
+                <strong>Time:</strong> {formatDate(history.RequestDateTime)}
+                <span
+                  style={{
+                    float: "right",
+                    transform: activeAccordion === index ? "rotate(180deg)" : "rotate(0deg)",
+                    transition: "transform 0.2s",
+                  }}
+                >
+                  ▼
+                </span>
+              </div>
+              <Collapse isOpen={activeAccordion === index}>
+                <div
+                  style={{
+                    padding: "15px",
+                    border: "1px solid #e9ecef",
+                    borderTop: "none",
+                  }}
+                >
+                  <p>
+                    <strong>Action:</strong>{" "}
                     <Badge color="success">{history.Action}</Badge>
-                  </td>
-                  <td>{history.Mode}</td>
-                  <td>
-                    <strong>Name:</strong> {history.ComputerName} <br />
-                    <strong>OS:</strong> {history.OS} <br />
-                    <strong>User:</strong> {history.ComputerUserName} <br />
-                    <strong>IP Address:</strong> {history.RequestIP}
-                  </td>
-                </tr>
-              ))}
-
-            </tbody>
-          </Table>
+                  </p>
+                  <p>
+                    <strong>Mode:</strong> {history.Mode}
+                  </p>
+                  <p>
+                    <strong>Computer:</strong>
+                  </p>
+                  <ul>
+                    <li>
+                      <strong>Name:</strong> {history.ComputerName}
+                    </li>
+                    <li>
+                      <strong>OS:</strong> {history.OS}
+                    </li>
+                    <li>
+                      <strong>User:</strong> {history.ComputerUserName}
+                    </li>
+                    <li>
+                      <strong>IP Address:</strong> {history.RequestIP}
+                    </li>
+                  </ul>
+                </div>
+              </Collapse>
+            </div>
+          ))}
         </CardBody>
       </Card>
     </div>

@@ -39,7 +39,7 @@ const TicketDetails = () => {
   const queryID = queryParams.get("QueryID");
 
 
-  console.log(JSON.stringify(query));
+
   const SupportID = query?.SupportID;
   const data = useSelector((state) => state.TicketDetail.data) || [];
   const loading = useSelector((state) => state.TicketDetail.loading);
@@ -47,7 +47,7 @@ const TicketDetails = () => {
   const success = useSelector((state) => state.TicketDetail.success);
   const [modal, setModal] = useState(false);
   const [modelOpen, setModalOpen] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(data);
+  const [selectedRow, setSelectedRow] = useState(data[0]);
   const [modalData, setModalData] = useState(null);
   const DailyStatusData = useSelector((state) => state.DailyStatus.data);
   const SupportStatusData = useSelector((state) => state.SupportStatuses.data);
@@ -56,7 +56,7 @@ const TicketDetails = () => {
   const DailyStatusError = useSelector((state) => state.DailyStatus.error);
   const ratingData = useSelector((state) => state.Rating.data);
   const [showRaiseTicketModal, setShowRaiseTicketModal] = useState(false);
-  console.log("Rating " + JSON.stringify(ratingData));
+ 
   const [IDdailyStatus,setIDdailyStatus]=useState([]);
   const [ticketData,setTicketData]=useState([]);
 
@@ -86,18 +86,13 @@ const TicketDetails = () => {
 
   const handleCloseModal = () => {
     // Any specific logic to handle when the modal closes
-    console.log("Modal is closing...");
     setModal(false);
-    dispatch(GET_TicketDetails(SupportID)); // Ensure the parent modalOpen state is updated
-    window.location.reload(true);
+    // dispatch(GET_TicketDetails(SupportID)); // Ensure the parent modalOpen state is updated
   };
 
-
-
-  console.log(data);
   const openModal = (dailyID) => {
     if (dailyID) {
-      console.log("DailyID clicked:", dailyID);
+     
       // Open a modal or perform other actions using the dailyID
       setModalData(dailyID); // Example: Set state for the modal
       setModal(true); // Example: Open the modal
@@ -168,12 +163,11 @@ const TicketDetails = () => {
 
   const toggleModal = () => {
     setShowRaiseTicketModal(!showRaiseTicketModal);
-    console.log("modal    ", showRaiseTicketModal)
   };
   const handleModalSubmit = () => {
     setShowRaiseTicketModal(false); // Close the modal
     dispatch(GET_TicketDetails(SupportID));// Refresh the page
-    Window.location.reload(true);
+    
   };
   const timeTaken = calculateTimeDifference(
     data[0]?.ReportDateTime,
@@ -199,12 +193,11 @@ const TicketDetails = () => {
       Rating: userRating,
       RatingRemarks: userRemarks,
     };
-    console.log(SupportID);
+    
 
     dispatch(POST_Rating(body));
   };
-  console.log(JSON.stringify(SupportID))
-  console.log("selected " + selectedRow)
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -332,9 +325,8 @@ const TicketDetails = () => {
                     </tbody>
                   </table>
                   <Button
-                    className="btn btn-primary btn-sm"
+                    className="btn btn-primary btn-sm w-100 "
                     onClick={toggleModal} // Trigger modal open
-                    style={{ marginLeft: "10px" }}
                   >
                     Edit
                   </Button>

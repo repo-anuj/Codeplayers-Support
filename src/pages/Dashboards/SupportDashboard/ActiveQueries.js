@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Col, Card, CardBody, CardHeader } from "reactstrap";
 import { PieChart, Pie, Cell, Legend, Tooltip, ResponsiveContainer } from "recharts";
 import IconsForVoucherType from "../../../Components/CPComponents/CPIcons/IconsForVoucherType";
+import Not_Available from "../../../assets/Not_Available.png"; // Import Not_Available image
 
 // Extended Colors for Chart
 const COLORS = [
@@ -63,6 +64,18 @@ const ActiveQueries = ({ queries }) => {
   const [selectedLevel, setSelectedLevel] = useState(0); // Tracks current level
   const [selectedData, setSelectedData] = useState(null); // Tracks data at each level
 
+  // Mapping for short forms
+  const NAME_SHORTFORM_MAP = {
+    "Review Pending": "RP",
+    "Client Review Pending": "CRP",
+    "Support Review Pending": "SRP",
+    "Approval Pending": "AP",
+    "Development Review Pending": "DRP",
+  };
+
+  // Helper function to get the short form
+  const getShortForm = (name) => NAME_SHORTFORM_MAP[name] || name;
+
   // Process Level 1 (group by CurrentStatus)
   const statusGroups = groupBy(queries, "CurrentStatus");
   const dataLevel1 = Object.entries(statusGroups).map(([status, items]) => ({
@@ -75,19 +88,19 @@ const ActiveQueries = ({ queries }) => {
   const dataLevel2 =
     selectedData && selectedLevel === 1
       ? Object.entries(selectedData.subData).map(([clientCode, items]) => ({
-        name: clientCode,
-        value: items.length,
-        subData: groupBy(items, "Module"), // Prepare subData for Level 3
-      }))
+          name: clientCode,
+          value: items.length,
+          subData: groupBy(items, "Module"), // Prepare subData for Level 3
+        }))
       : [];
 
   // Process Level 3 (group by Module)
   const dataLevel3 =
     selectedData && selectedLevel === 2
       ? Object.entries(selectedData.subData).map(([module, items]) => ({
-        name: module,
-        value: items.length,
-      }))
+          name: module,
+          value: items.length,
+        }))
       : [];
 
   const handleClick = (data, index) => {
@@ -113,48 +126,61 @@ const ActiveQueries = ({ queries }) => {
     selectedLevel === 0
       ? dataLevel1
       : selectedLevel === 1
-        ? dataLevel2
-        : dataLevel3;
+      ? dataLevel2
+      : dataLevel3;
+
+  const noDataAvailable = chartData.length === 0;
 
   return (
     <Col xxl={12}>
       <Card className="card-height-100" style={{ height: "487px" }}>
-        <CardHeader className="card-header align-items-center d-flex">
+        <CardHeader className="card-header align-items-center d-flex border-bottom border-1">
           {IconsForVoucherType("Recent Activity")}
           <h4 className="card-title mb-0 flex-grow-1">Active Queries</h4>
         </CardHeader>
-        <CardBody className="p-0 d-flex flex-column justify-content-center align-items-center">
+        <CardBody className="p-0 d-flex flex-column justify-content-center align-items-center ">
           <div style={{ textAlign: "center", width: "100%", maxWidth: "500px" }}>
-            <ResponsiveContainer width="100%" height={350}>
-              <PieChart>
-                <Pie
-                  data={chartData}
-                  dataKey="value"
-                  nameKey="name"
-                  cx="50%"
-                  cy="50%"
-                  outerRadius={110}
-                  innerRadius={selectedLevel > 0 ? 70 : 0}
-                  onClick={handleClick}
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                >
-                  {chartData.map((entry, index) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
-                <Tooltip />
-                {/* Custom Legend to show name and count */}
-                <Legend
-                  content={<CustomLegend />}
-                  layout="horizontal"
-                  align="center"
-                  verticalAlign="bottom"
-                />
-              </PieChart>
-            </ResponsiveContainer>
+          {queries.length === 0 ? (
+                        <div className="d-flex flex-column justify-content-center align-items-center" style={{ height: "435px" }}>
+                            <img
+                                src={Not_Available}
+                                alt="No Data Available"
+                                style={{ height: "auto", width: "20%" }}
+                            />
+                            <p className="text-muted mt-3">No Active Queries Available.</p>
+                        </div>
+                    ) : (
+              <ResponsiveContainer width="100%" height={350}>
+                <PieChart>
+                  <Pie
+                    data={chartData}
+                    dataKey="value"
+                    nameKey="name"
+                    cx="50%"
+                    cy="50%"
+                    outerRadius={110}
+                    innerRadius={selectedLevel > 0 ? 70 : 0}
+                    onClick={handleClick}
+                     // Use short form in the label
+                  >
+                    {chartData.map((entry, index) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        fill={COLORS[index % COLORS.length]}
+                      />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  {/* Custom Legend to show name and count */}
+                  <Legend
+                    content={<CustomLegend />}
+                    layout="horizontal"
+                    align="center"
+                    verticalAlign="bottom"
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
 
             {selectedLevel > 0 && (
               <button

@@ -38,8 +38,8 @@ const ChangePassword = () => {
         }),
         onSubmit: (values) => {
             dispatch(POST_Vendor_ChangePassword({
-                oldPassword: values.oldPassword,
-                newPassword: values.newPassword,
+                OldPassword: values.oldPassword,
+                NewPassword: values.newPassword,
             }));
         }
     });

@@ -27,8 +27,8 @@ const ApprovalPendingModal = ({ modalOpen, selectedRow, onClose }) => {
     const loading = useSelector((state) => state.ApprovalPending.loading);
     const success = useSelector((state) => state.ApprovalPending.success);
     const dispatch = useDispatch();
-    const vendorUser = JSON.parse(localStorage.getItem("vendorUser"
-    ));
+    const vendorUser = JSON.parse(localStorage.getItem("vendorUser"));
+    const userRole = localStorage.getItem("userRole");
     const formatLocalDateTime = (date) => {
         const offset = date.getTimezoneOffset();
         const localDate = new Date(date.getTime() - offset * 60 * 1000);
