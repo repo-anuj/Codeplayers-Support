@@ -44,14 +44,20 @@
 // navbar
 
 .navbar-landing {
-  padding: 10px 0px;
+  padding: 0px 0px;
   transition: all 0.5s ease;
   @media (max-width: 1400.98px) {
     background: rgba(0, 0, 0, 0.8); // Use rgba for opacity
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(13.7px);
     -webkit-backdrop-filter: blur(5.7px);
-    padding: 10px 8px;
+    padding: 0px 0px;
+  }
+
+  .container {
+    button {
+      color: white !important;
+    }
   }
 
   .navbar-nav {
@@ -60,6 +66,7 @@
         font-size: 16px;
         font-weight: $font-weight-medium;
         transition: all 0.4s;
+        transition: color 0.3s ease;
         font-family: $font-family-secondary;
         color: #ffffff;
         padding: 14px;
@@ -69,7 +76,9 @@
         }
 
         &:hover,
-        &.active,
+        &.active {
+          color: #9f7aea !important;
+        }
         &:focus {
           color: #9f7aea !important;
         }
@@ -86,14 +95,20 @@
   }
 }
 .navbar-landing2 {
-  padding: 10px 0px;
+  padding: 0px 0px;
   transition: all 0.5s ease;
   @media (max-width: 1400.98px) {
     background: rgba(0, 0, 0, 0.8); // Use rgba for opacity
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(13.7px);
     -webkit-backdrop-filter: blur(5.7px);
-    padding: 10px 8px;
+    padding: 0px 0px;
+  }
+
+  .container {
+    button {
+      color: white !important;
+    }
   }
 
   .navbar-nav {
@@ -106,10 +121,8 @@
         color: #000000;
         padding: 14px;
 
-        @media (max-width: 991.98px) {
-          .nav-link {
-            color: #ffffff;
-          }
+        @media (max-width: 768px) {
+          color: #ffffff;
           padding: 8px 0px;
         }
 

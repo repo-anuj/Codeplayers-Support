@@ -51,6 +51,9 @@
       background-repeat: no-repeat;
       pointer-events: none;
       z-index: -1;
+      @media (max-width: 768px) {
+        opacity: 0 !important;
+      }
     }
 
     &-content {
@@ -117,6 +120,10 @@
 
     .visual-content {
       position: relative;
+      @media (max-width: 768px) {
+        position: relative;
+        right: 65px;
+      }
 
       .product-card {
         padding: 1.5rem;

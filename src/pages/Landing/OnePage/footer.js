@@ -13,7 +13,7 @@ const Footer = () => {
             <Col lg={4} className="mt-4">
               <div>
                 <div>
-                  <img src={logolight} alt="logo light" height="17" />
+                  <img src={logolight} alt="logo light" height="55" />
                 </div>
                 <div className="mt-4 fs-13">
                   <p>Innovative ERP Solutions for Modern Businesses</p>
